@@ -64,6 +64,9 @@ import org.spongepowered.api.item.inventory.equipment.WornEquipmentType;
 import org.spongepowered.api.item.inventory.query.QueryOperationType;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.scoreboard.CollisionRule;
+import org.spongepowered.api.keyboard.KeyBinding;
+import org.spongepowered.api.keyboard.KeyCategory;
+import org.spongepowered.api.keyboard.KeyContext;
 import org.spongepowered.api.scoreboard.Visibility;
 import org.spongepowered.api.scoreboard.critieria.Criterion;
 import org.spongepowered.api.scoreboard.displayslot.DisplaySlot;
@@ -239,6 +242,12 @@ public final class CatalogTypes {
     public static final Class<ItemStatistic> ITEM_STATISTIC = ItemStatistic.class;
 
     public static final Class<ItemType> ITEM_TYPE = ItemType.class;
+
+    public static final Class<KeyBinding> KEY_BINDING = KeyBinding.class;
+
+    public static final Class<KeyCategory> KEY_CATEGORY = KeyCategory.class;
+
+    public static final Class<KeyContext> KEY_CONTEXT = KeyContext.class;
 
     public static final Class<LlamaVariant> LLAMA_VARIANT = LlamaVariant.class;
 

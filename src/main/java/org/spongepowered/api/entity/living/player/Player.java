@@ -28,7 +28,6 @@ import org.spongepowered.api.Server;
 import org.spongepowered.api.advancement.Advancement;
 import org.spongepowered.api.advancement.AdvancementProgress;
 import org.spongepowered.api.advancement.AdvancementTree;
-import org.spongepowered.api.block.tileentity.EnderChest;
 import org.spongepowered.api.command.CommandManager;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.source.RemoteSource;
@@ -48,6 +47,7 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.item.inventory.Container;
 import org.spongepowered.api.item.inventory.Inventory;
+import org.spongepowered.api.keyboard.KeyBinding;
 import org.spongepowered.api.network.PlayerConnection;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.resourcepack.ResourcePack;
@@ -387,4 +387,13 @@ public interface Player extends Humanoid, User, RemoteSource, Viewer, ChatTypeMe
      * @return The advancement trees
      */
     Collection<AdvancementTree> getUnlockedAdvancementTrees();
+
+    /**
+     * Gets all the {@link KeyBinding}s that are available for this {@link Player},
+     * if the player doesn't have a client that supports custom key bindings this
+     * will always return a empty collection.
+     *
+     * @return The key bindings
+     */
+    Collection<KeyBinding> getKeyBindings();
 }
