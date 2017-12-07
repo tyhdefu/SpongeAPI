@@ -199,6 +199,8 @@ sortClassFields {
     add 'main', 'org.spongepowered.api.util.TypeTokens'
     add 'main', 'org.spongepowered.api.util.ban.BanTypes'
     add 'main', 'org.spongepowered.api.util.rotation.Rotations'
+    add 'main', 'org.spongepowered.api.variety.VarietyCollections'
+    add 'main', 'org.spongepowered.api.variety.Varieties'
     add 'main', 'org.spongepowered.api.world.biome.BiomeTypes'
     add 'main', 'org.spongepowered.api.world.BlockChangeFlags'
     add 'main', 'org.spongepowered.api.world.DimensionTypes'

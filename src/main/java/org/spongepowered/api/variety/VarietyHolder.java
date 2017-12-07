@@ -22,51 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.item;
+package org.spongepowered.api.variety;
 
-import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.GameDictionary;
-import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.data.property.PropertyHolder;
-import org.spongepowered.api.data.property.TransformablePropertyHolder;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.text.translation.Translatable;
-import org.spongepowered.api.util.annotation.CatalogedBy;
-import org.spongepowered.api.variety.VarietyHolder;
-
-import java.util.Optional;
 
 /**
- * A type of item.
+ * Represents something that can be filtered in a {@link VarietyCollection}.
  */
-@CatalogedBy(ItemTypes.class)
-public interface ItemType extends CatalogType, Translatable, PropertyHolder, VarietyHolder, TransformablePropertyHolder<ItemType>,
-        GameDictionary.Entry {
+public interface VarietyHolder extends PropertyHolder {
 
     /**
-     * Gets the corresponding {@link BlockType} of this item if one exists.
-     * 
-     *  @return The Block
-     */
-    Optional<BlockType> getBlock();
-
-    /**
-     * Gets the id of this item.
+     * Gets whether this object matches the requirements
+     * of the {@link VarietyMatcher}.
      *
-     * <p>Ex. Minecraft registers a golden carrot as
-     * "minecraft:golden_carrot".</p>
-     *
-     * @return The id
+     * @param matcher The matcher
+     * @return Matches
      */
-    @Override
-    String getName();
-
-    /**
-     * Gets the default maximum quantity for
-     * {@link ItemStack}s of this item.
-     *
-     * @return Max stack quantity
-     */
-    int getMaxStackQuantity();
-
+    boolean matches(VarietyMatcher matcher);
 }

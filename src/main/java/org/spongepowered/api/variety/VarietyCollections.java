@@ -22,51 +22,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.item;
+package org.spongepowered.api.variety;
 
-import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.GameDictionary;
+import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.block.BlockType;
-import org.spongepowered.api.data.property.PropertyHolder;
-import org.spongepowered.api.data.property.TransformablePropertyHolder;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.text.translation.Translatable;
-import org.spongepowered.api.util.annotation.CatalogedBy;
-import org.spongepowered.api.variety.VarietyHolder;
-
-import java.util.Optional;
+import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.util.generator.dummy.DummyObjectProvider;
 
 /**
- * A type of item.
+ * An enumeration of default {@link VarietyCollection}s.
  */
-@CatalogedBy(ItemTypes.class)
-public interface ItemType extends CatalogType, Translatable, PropertyHolder, VarietyHolder, TransformablePropertyHolder<ItemType>,
-        GameDictionary.Entry {
+@SuppressWarnings("unchecked")
+public final class VarietyCollections {
+
+    // SORTFIELDS:ON
 
     /**
-     * Gets the corresponding {@link BlockType} of this item if one exists.
-     * 
-     *  @return The Block
+     * A collection with all the available {@link BlockType}s.
      */
-    Optional<BlockType> getBlock();
+    public static final VarietyCollection<BlockType> BLOCKS = DummyObjectProvider.createFor(VarietyCollection.class, "BLOCKS");
 
     /**
-     * Gets the id of this item.
-     *
-     * <p>Ex. Minecraft registers a golden carrot as
-     * "minecraft:golden_carrot".</p>
-     *
-     * @return The id
+     * A collection with all the available {@link BlockState}s.
      */
-    @Override
-    String getName();
+    public static final VarietyCollection<BlockState> BLOCK_STATES = DummyObjectProvider.createFor(VarietyCollection.class, "BLOCK_STATES");
 
     /**
-     * Gets the default maximum quantity for
-     * {@link ItemStack}s of this item.
-     *
-     * @return Max stack quantity
+     * A collection with all the available {@link ItemType}s.
      */
-    int getMaxStackQuantity();
+    public static final VarietyCollection<ItemType> ITEMS = DummyObjectProvider.createFor(VarietyCollection.class, "ITEMS");
 
+    // SORTFIELDS:OFF
+
+    private VarietyCollections() {
+    }
 }

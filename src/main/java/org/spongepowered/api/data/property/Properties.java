@@ -30,10 +30,12 @@ import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.data.manipulator.mutable.entity.DominantHandData;
 import org.spongepowered.api.data.type.ArmorType;
+import org.spongepowered.api.data.type.DyeColor;
 import org.spongepowered.api.data.type.HandPreference;
 import org.spongepowered.api.data.type.InstrumentType;
 import org.spongepowered.api.data.type.Matter;
 import org.spongepowered.api.data.type.ToolType;
+import org.spongepowered.api.data.type.TreeType;
 import org.spongepowered.api.effect.potion.PotionEffect;
 import org.spongepowered.api.effect.sound.record.RecordType;
 import org.spongepowered.api.entity.living.Living;
@@ -114,6 +116,13 @@ public final class Properties {
             DummyObjectProvider.createFor(Property.class, "DOMINANT_HAND");
 
     /**
+     * A property to represent the dye color of something. For example wool,
+     * stained glass, etc.
+     */
+    public static final Property<DyeColor> DYE_COLOR =
+            DummyObjectProvider.createFor(Property.class, "DYE_COLOR");
+
+    /**
      * A property to represent the eye height of a entity.
      */
     public static final Property<Double> EYE_HEIGHT =
@@ -190,6 +199,12 @@ public final class Properties {
      */
     public static final Property<Boolean> HAS_STATISTICS_TRACKING =
             DummyObjectProvider.createFor(Property.class, "HAS_STATISTICS_TRACKING");
+
+    /**
+     * A property to represent whether something is cooked, usually food.
+     */
+    public static final Property<Boolean> IS_COOKED =
+            DummyObjectProvider.createFor(Property.class, "IS_COOKED");
 
     /**
      * A property to represent whether something is flammable.
@@ -331,6 +346,13 @@ public final class Properties {
      */
     public static final Property<ToolType> TOOL_TYPE =
             DummyObjectProvider.createFor(Property.class, "TOOL_TYPE");
+
+    /**
+     * A property to represent the {@link TreeType} of something. Usually related
+     * to blocks made of wood, e.g. stairs, planks, slabs, etc.
+     */
+    public static final Property<TreeType> TREE_TYPE =
+            DummyObjectProvider.createFor(Property.class, "TREE_TYPE");
 
     /**
      * A property to represent a limit on the number of uses on an item or block. Whether the

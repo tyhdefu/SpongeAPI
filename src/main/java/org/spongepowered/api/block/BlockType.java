@@ -27,10 +27,11 @@ package org.spongepowered.api.block;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.block.trait.BlockTrait;
 import org.spongepowered.api.data.DataHolder;
-import org.spongepowered.api.data.property.PropertyHolder;
+import org.spongepowered.api.data.property.TransformablePropertyHolder;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.text.translation.Translatable;
 import org.spongepowered.api.util.annotation.CatalogedBy;
+import org.spongepowered.api.variety.VarietyHolder;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -43,7 +44,8 @@ import java.util.Optional;
  * via {@link DataHolder}.</p>
  */
 @CatalogedBy(BlockTypes.class)
-public interface BlockType extends CatalogType, Translatable, PropertyHolder {
+public interface BlockType extends CatalogType, Translatable, VarietyHolder,
+        TransformablePropertyHolder<BlockType> {
 
     /**
      * Return the internal ID for the block.

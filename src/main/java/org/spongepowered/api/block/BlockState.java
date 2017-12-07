@@ -37,6 +37,7 @@ import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.api.util.Cycleable;
+import org.spongepowered.api.variety.VarietyHolder;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -51,7 +52,7 @@ import java.util.Optional;
  * a single instance of a particular {@link BlockState} as they are immutable,
  * a particular instance may be cached for various uses.
  */
-public interface BlockState extends ImmutableDataHolder<BlockState>, DirectionRelativePropertyHolder, CatalogType {
+public interface BlockState extends ImmutableDataHolder<BlockState>, DirectionRelativePropertyHolder, CatalogType, VarietyHolder {
 
     /**
      * Creates a new {@link Builder} for building {@link BlockState}s.

@@ -22,51 +22,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.item;
+package org.spongepowered.api.variety;
 
 import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.GameDictionary;
 import org.spongepowered.api.block.BlockType;
+import org.spongepowered.api.data.property.Properties;
+import org.spongepowered.api.data.property.Property;
 import org.spongepowered.api.data.property.PropertyHolder;
-import org.spongepowered.api.data.property.TransformablePropertyHolder;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.text.translation.Translatable;
-import org.spongepowered.api.util.annotation.CatalogedBy;
-import org.spongepowered.api.variety.VarietyHolder;
+import org.spongepowered.api.data.type.TreeTypes;
 
-import java.util.Optional;
+import java.util.Collection;
 
 /**
- * A type of item.
+ * A variety is a kind of marker that can be used to group
+ * {@link VarietyHolder}s. For example grouping all the
+ * stair {@link BlockType}s that are available.
+ * <p>Some varieties may also contain {@link Property}s which
+ * can also be used to match the {@link VarietyHolder}. For example,
+ * the {@link Varieties#BIRCH} will contain a {@link Properties#TREE_TYPE}
+ * with the tree type {@link TreeTypes#BIRCH}. This property
+ * can also be used to query for a block with a specific tree type.
  */
-@CatalogedBy(ItemTypes.class)
-public interface ItemType extends CatalogType, Translatable, PropertyHolder, VarietyHolder, TransformablePropertyHolder<ItemType>,
-        GameDictionary.Entry {
+public interface Variety extends CatalogType, PropertyHolder {
 
     /**
-     * Gets the corresponding {@link BlockType} of this item if one exists.
-     * 
-     *  @return The Block
+     * Gets a {@link Collection} with all the {@link VarietyHolder}
+     * types this variety supports.
+     *
+     * @return The collection
      */
-    Optional<BlockType> getBlock();
+    Collection<Class<? extends VarietyHolder>> getSupportedHolders();
 
     /**
-     * Gets the id of this item.
+     * Gets whether this {@link Variety} is applicable to
+     * the given {@link VarietyHolder}.
      *
-     * <p>Ex. Minecraft registers a golden carrot as
-     * "minecraft:golden_carrot".</p>
-     *
-     * @return The id
+     * @param varietyHolder The variety holder
+     * @return Whether this variety applies to the given variety holder
      */
-    @Override
-    String getName();
-
-    /**
-     * Gets the default maximum quantity for
-     * {@link ItemStack}s of this item.
-     *
-     * @return Max stack quantity
-     */
-    int getMaxStackQuantity();
-
+    boolean appliesTo(VarietyHolder varietyHolder);
 }

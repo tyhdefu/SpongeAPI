@@ -22,51 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.item;
+package org.spongepowered.api.data.property;
 
-import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.GameDictionary;
-import org.spongepowered.api.block.BlockType;
-import org.spongepowered.api.data.property.PropertyHolder;
-import org.spongepowered.api.data.property.TransformablePropertyHolder;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.text.translation.Translatable;
-import org.spongepowered.api.util.annotation.CatalogedBy;
-import org.spongepowered.api.variety.VarietyHolder;
+import org.spongepowered.api.item.ItemTypes;
 
 import java.util.Optional;
 
 /**
- * A type of item.
+ * Represents a {@link PropertyHolder} that can be transformed into another
+ * {@link PropertyHolder} by modifying supported {@link Property}s.
+ *
+ * @param <T> The property holder type
  */
-@CatalogedBy(ItemTypes.class)
-public interface ItemType extends CatalogType, Translatable, PropertyHolder, VarietyHolder, TransformablePropertyHolder<ItemType>,
-        GameDictionary.Entry {
+public interface TransformablePropertyHolder<T extends TransformablePropertyHolder<T>> extends PropertyHolder {
 
     /**
-     * Gets the corresponding {@link BlockType} of this item if one exists.
-     * 
-     *  @return The Block
-     */
-    Optional<BlockType> getBlock();
-
-    /**
-     * Gets the id of this item.
+     * Transforms this property holder with the given {@link Property}. The
+     * transformed property holder will be returned if the {@link Property}
+     * and property value are supported.
+     * <p>For example, this can be used to transform a {@link ItemTypes#BEEF}
+     * into a {@link ItemTypes#COOKED_BEEF} when applying the
+     * {@link Properties#IS_COOKED} with a {@code true} value.
      *
-     * <p>Ex. Minecraft registers a golden carrot as
-     * "minecraft:golden_carrot".</p>
-     *
-     * @return The id
+     * @param property The property
+     * @param value The property value
+     * @return The transformed property holder, if successful
      */
-    @Override
-    String getName();
-
-    /**
-     * Gets the default maximum quantity for
-     * {@link ItemStack}s of this item.
-     *
-     * @return Max stack quantity
-     */
-    int getMaxStackQuantity();
-
+    <V> Optional<T> transformWith(Property<V> property, V value);
 }
