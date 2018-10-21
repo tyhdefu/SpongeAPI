@@ -32,7 +32,9 @@ import org.spongepowered.api.event.Event;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.message.MessageEvent;
+import org.spongepowered.api.network.ClientConnection;
 import org.spongepowered.api.network.RemoteConnection;
+import org.spongepowered.api.network.login.LoginChannelContext;
 import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.service.ban.BanService;
 import org.spongepowered.api.service.whitelist.WhitelistService;
@@ -68,11 +70,11 @@ public interface ClientConnectionEvent extends Event {
     interface Auth extends ClientConnectionEvent, MessageEvent, Cancellable {
 
         /**
-         * Gets the {@link RemoteConnection} representing the client connection.
+         * Gets the {@link ClientConnection}.
          *
-         * @return The remote connection
+         * @return The client connection
          */
-        RemoteConnection getConnection();
+        ClientConnection getConnection();
 
         /**
          * Gets the profile of the client attempting to connect.
@@ -112,11 +114,11 @@ public interface ClientConnectionEvent extends Event {
         User getUser();
 
         /**
-         * Gets the {@link RemoteConnection} representing the client connection.
+         * Gets the {@link ClientConnection}.
          *
          * @return The remote connection
          */
-        RemoteConnection getConnection();
+        ClientConnection getConnection();
 
         /**
          * Gets the profile of the client attempting to connect.

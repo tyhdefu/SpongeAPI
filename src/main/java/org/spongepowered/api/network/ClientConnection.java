@@ -24,23 +24,17 @@
  */
 package org.spongepowered.api.network;
 
-import org.spongepowered.api.Platform;
+import org.spongepowered.api.profile.GameProfile;
 
 /**
- * Represents a handler for a message that was received over the network.
+ * Represents a connection between a minecraft client and the server.
  */
-@FunctionalInterface
-public interface MessageHandler<M extends Message> {
+public interface ClientConnection extends RemoteConnection {
 
     /**
-     * Handles the message sent by a client connection.
+     * Gets the profile of the client.
      *
-     * @param message The message received
-     * @param connection The connection that sent the message
-     * @param side The side the message was received on (
-     *        {@link org.spongepowered.api.Platform.Type#CLIENT}
-     *        or {@link org.spongepowered.api.Platform.Type#SERVER})
+     * @return The client's profile
      */
-    void handleMessage(M message, RemoteConnection connection, Platform.Type side);
-
+    GameProfile getProfile();
 }

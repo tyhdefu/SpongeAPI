@@ -27,20 +27,28 @@ package org.spongepowered.api.network;
 import org.spongepowered.api.Platform;
 
 /**
- * Represents a handler for a message that was received over the network.
+ * Represents a message handler for {@link RequestMessage}s.
+ *
+ * @param <M> The request message type
+ * @param <R> The response message type
  */
-@FunctionalInterface
-public interface MessageHandler<M extends Message> {
+public interface RequestMessageHandler<M extends RequestMessage<R>, R extends ResponseMessage> {
 
     /**
-     * Handles the message sent by a client connection.
+     * Handles the {@link RequestMessage} which was send by a specific
+     * {@link RemoteConnection}. A proper {@link ResponseMessage} should
+     * be answered with.
      *
-     * @param message The message received
+     * <p>If this handlers fails with an {@link Exception}, then
+     * will the other endpoint of the connection will receive a
+     * {@link NoResponseMessageException}.</p>
+     *
+     * @param message The received request message
      * @param connection The connection that sent the message
      * @param side The side the message was received on (
      *        {@link org.spongepowered.api.Platform.Type#CLIENT}
      *        or {@link org.spongepowered.api.Platform.Type#SERVER})
      */
-    void handleMessage(M message, RemoteConnection connection, Platform.Type side);
+    R handleMessage(M message, RemoteConnection connection, Platform.Type side);
 
 }
