@@ -29,6 +29,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
+import org.spongepowered.api.item.recipe.Ingredient;
 import org.spongepowered.api.item.recipe.Recipe;
 import org.spongepowered.api.text.translation.Translation;
 import org.spongepowered.api.util.CatalogBuilder;
@@ -42,7 +43,7 @@ import java.util.function.Predicate;
  * suit your creative needs, or you can simply use the
  * {@link SmeltingRecipe.Builder}.
  */
-public interface SmeltingRecipe extends Recipe {
+public interface SmeltingRecipe extends Recipe<SmeltingInput, SmeltingOutput> {
 
     /**
      * Builds a simple furnace recipe. Note, that you can implement the
@@ -62,6 +63,8 @@ public interface SmeltingRecipe extends Recipe {
      */
     ItemStackSnapshot getExemplaryIngredient();
 
+    Ingredient getIngredient();
+
     /**
      * Checks if the given {@link ItemStackSnapshot} fits the required
      * constraints to craft this {@link SmeltingRecipe}.
@@ -69,10 +72,12 @@ public interface SmeltingRecipe extends Recipe {
      * @param ingredient The ingredient to check against
      * @return Whether this ingredient can be used to craft the result
      */
-    boolean isValid(ItemStackSnapshot ingredient);
+    default boolean isValid(ItemStackSnapshot ingredient) {
+        return getOutput(ingredient).isPresent();
+    }
 
     /**
-     * <p>Returns the {@link SmeltingResult} containing the resulting
+     * <p>Returns the {@link SmeltingOutput} containing the resulting
      * {@link ItemStackSnapshot} and the amount of experience released.</p>
      *
      * <p>This method should be used instead of the {@link #getExemplaryResult()}
@@ -82,11 +87,32 @@ public interface SmeltingRecipe extends Recipe {
      * and {@code return} it.</p>
      *
      * @param ingredient The {@link ItemStackSnapshot} currently being smelted
-     * @return The {@link SmeltingResult}, or {@link Optional#empty()}
+     * @return The {@link SmeltingOutput}, or {@link Optional#empty()}
      *         if the recipe is not valid according to
      *         {@link #isValid(ItemStackSnapshot)}.
      */
-    Optional<SmeltingResult> getResult(ItemStackSnapshot ingredient);
+    default Optional<SmeltingOutput> getOutput(ItemStack ingredient) {
+        return getOutput(() -> ingredient);
+    }
+
+    /**
+     * <p>Returns the {@link SmeltingOutput} containing the resulting
+     * {@link ItemStackSnapshot} and the amount of experience released.</p>
+     *
+     * <p>This method should be used instead of the {@link #getExemplaryResult()}
+     * method, as it customizes the result further depending on the specified
+     * ingredient {@link ItemStackSnapshot}. It is advised to use
+     * the output of {@link #getExemplaryResult()}, modify it accordingly,
+     * and {@code return} it.</p>
+     *
+     * @param ingredient The {@link ItemStackSnapshot} currently being smelted
+     * @return The {@link SmeltingOutput}, or {@link Optional#empty()}
+     *         if the recipe is not valid according to
+     *         {@link #isValid(ItemStackSnapshot)}.
+     */
+    default Optional<SmeltingOutput> getOutput(ItemStackSnapshot ingredient) {
+        return getOutput(ingredient::createStack);
+    }
 
     /**
      * Builds a simple furnace recipe.

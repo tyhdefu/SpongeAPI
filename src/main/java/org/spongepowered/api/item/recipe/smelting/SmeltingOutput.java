@@ -24,41 +24,15 @@
  */
 package org.spongepowered.api.item.recipe.smelting;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.MoreObjects;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
+import org.spongepowered.api.item.recipe.RecipeOutput;
 
-import java.util.Objects;
+import java.time.Duration;
 
 /**
  * The result of fulfilling a {@link SmeltingRecipe}.
  */
-public final class SmeltingResult {
-
-    private final ItemStackSnapshot result;
-    private final double experience;
-
-    /**
-     * Creates a new {@link SmeltingResult}.
-     *
-     * <p>Note that this may be replaced with a static of method in the
-     * future.</p>
-     *
-     * @param result The result of the smelting recipe
-     * @param experience The experience that should be created from this
-     *     smelting result
-     */
-    @SuppressWarnings("ConstantConditions")
-    public SmeltingResult(ItemStackSnapshot result, double experience) {
-        checkNotNull(result, "result");
-        checkArgument(result != ItemStackSnapshot.NONE, "The result must not be ItemStackSnapshot.NONE.");
-        checkArgument(experience >= 0, "The experience must be non-negative.");
-
-        this.result = result;
-        this.experience = experience;
-    }
+public interface SmeltingOutput extends RecipeOutput {
 
     /**
      * This method should be used instead of the
@@ -71,9 +45,7 @@ public final class SmeltingResult {
      * @return The result of fulfilling the requirements of a
      *         {@link SmeltingRecipe}
      */
-    public ItemStackSnapshot getResult() {
-        return this.result;
-    }
+    ItemStackSnapshot getResult();
 
     /**
      * Returns the amount of experience released after completing a recipe.
@@ -81,32 +53,13 @@ public final class SmeltingResult {
      * @return The amount of experience released after fulfilling the
      *         requirements of a {@link SmeltingRecipe}
      */
-    public double getExperience() {
-        return this.experience;
-    }
+    double getExperience();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof SmeltingResult)) {
-            return false;
-        }
-        SmeltingResult that = (SmeltingResult) o;
-        return Double.compare(that.experience, this.experience) == 0 && Objects.equals(this.result, that.result);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.result, this.experience);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("result", this.result)
-                .add("experience", this.experience)
-                .toString();
-    }
+    /**
+     * Gets the {@link Duration} it takes to smelt the input
+     * into the {@link #getResult()}.
+     *
+     * @return The smelt duration
+     */
+    Duration getDuration();
 }

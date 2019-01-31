@@ -24,39 +24,52 @@
  */
 package org.spongepowered.api.item.recipe.crafting;
 
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.crafting.CraftingGridInventory;
-import org.spongepowered.api.item.recipe.RecipeRegistry;
+import org.spongepowered.api.item.recipe.RecipeInput;
 import org.spongepowered.api.world.World;
 
 import java.util.Optional;
 
-/**
- * A registry for Crafting Table recipes.
- */
-public interface CraftingRecipeRegistry extends RecipeRegistry<CraftingRecipe> {
+import javax.annotation.Nullable;
 
-    /**
-     * Retrieves the recipe which would be crafted when the player clicks
-     * the output slot.
-     *
-     * @param grid The crafting grid
-     * @param world The world the player is in
-     * @return The found {@link CraftingRecipe}, or {@link Optional#empty()}
-     *         if no recipe was found for this configuration
-     */
-    Optional<CraftingRecipe> findMatchingRecipe(CraftingGridInventory grid, World world);
+public interface CraftingInput extends RecipeInput {
 
-    /**
-     * Finds the matching recipe and creates the {@link CraftingResult},
-     * which is then returned.
-     *
-     * @param grid The crafting grid
-     * @param world The world the player is in
-     * @return The {@link CraftingResult} if a recipe was found, or
-     *         {@link Optional#empty()} if not
-     */
-    default Optional<CraftingResult> getResult(CraftingGridInventory grid, World world) {
-        return findMatchingRecipe(grid, world)
-                .flatMap(recipe -> recipe.getResult(grid, world));
+    Optional<World> getWorld();
+
+    int getRows();
+
+    int getColumns();
+
+    ItemStack get(int x, int y);
+
+    static CraftingInput of(CraftingGridInventory inventory) {
+        return of(inventory, null);
+    }
+
+    static CraftingInput of(CraftingGridInventory inventory, @Nullable World world) {
+        return new CraftingInput() {
+
+            @Override
+            public Optional<World> getWorld() {
+                return Optional.ofNullable(world);
+            }
+
+            @Override
+            public int getRows() {
+                return inventory.getRows();
+            }
+
+            @Override
+            public int getColumns() {
+                return inventory.getColumns();
+            }
+
+            @Override
+            public ItemStack get(int x, int y) {
+                return inventory.peek(x, y).orElseThrow(() ->
+                        new IllegalArgumentException(String.format("Invalid slot coordinates (%s, %s)", x, y)));
+            }
+        };
     }
 }

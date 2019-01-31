@@ -22,45 +22,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.item.recipe;
+package org.spongepowered.api.item.recipe.brewing;
 
-import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-import org.spongepowered.api.world.World;
+import org.spongepowered.api.item.recipe.RecipeOutput;
 
-import java.util.Optional;
+import java.time.Duration;
 
-/**
- * A general interface for recipes.
- *
- * @param <O> The type of the recipe output
- * @param <I> The type of the recipe target
- */
-public interface Recipe<I extends RecipeInput, O extends RecipeOutput> extends CatalogType {
+public interface BrewingOutput extends RecipeOutput {
 
     /**
-     * A general result of this recipe. This result may be customized depending
-     * on the context.
+     * Gets {@link Duration} of how long the input
+     * should brew before it's ready.
      *
-     * @return The exemplary result of this recipe
+     * @return The duration
      */
-    ItemStackSnapshot getExemplaryResult();
+    Duration getDuration();
 
     /**
-     * Checks if the given {@link RecipeInput} fits the required
-     * constraints to use this recipe.
+     * Gets the result {@link ItemStackSnapshot}.
      *
-     * @return True if the given input matches this recipe's requirements
+     * @return The result item
      */
-    default boolean isValid(I input) {
-        return getOutput(input).isPresent();
-    }
-
-    /**
-     * Returns the {@link RecipeOutput} for the current inventory
-     * configuration and the {@link World} the player is in.
-     *
-     * @return A {@link RecipeOutput} if the arguments satisfy this recipe
-     */
-    Optional<O> getOutput(I input);
+    ItemStackSnapshot getResult();
 }

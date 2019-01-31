@@ -22,45 +22,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.item.recipe;
+package org.spongepowered.api.item.fuel;
 
-import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-import org.spongepowered.api.world.World;
-
-import java.util.Optional;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.tileentity.carrier.BrewingStand;
+import org.spongepowered.api.item.ItemTypes;
 
 /**
- * A general interface for recipes.
+ * Represent fuel that can be used inside a {@link BrewingStand}.
  *
- * @param <O> The type of the recipe output
- * @param <I> The type of the recipe target
+ * <p>The only brewing fuel that exist in vanilla minecraft is
+ * {@link ItemTypes#BLAZE_POWDER}.</p>
  */
-public interface Recipe<I extends RecipeInput, O extends RecipeOutput> extends CatalogType {
+public interface BrewingFuel extends BaseFuel {
 
     /**
-     * A general result of this recipe. This result may be customized depending
-     * on the context.
+     * Creates a {@link Builder} to build {@link BrewingFuel}s.
      *
-     * @return The exemplary result of this recipe
+     * @return A brewing fuel builder
      */
-    ItemStackSnapshot getExemplaryResult();
-
-    /**
-     * Checks if the given {@link RecipeInput} fits the required
-     * constraints to use this recipe.
-     *
-     * @return True if the given input matches this recipe's requirements
-     */
-    default boolean isValid(I input) {
-        return getOutput(input).isPresent();
+    static Builder builder() {
+        return Sponge.getRegistry().createBuilder(Builder.class);
     }
 
     /**
-     * Returns the {@link RecipeOutput} for the current inventory
-     * configuration and the {@link World} the player is in.
-     *
-     * @return A {@link RecipeOutput} if the arguments satisfy this recipe
+     * A builder to construct {@link BrewingFuel}s.
      */
-    Optional<O> getOutput(I input);
+    interface Builder extends BaseFuel.Builder<BrewingFuel, Builder> {
+    }
 }

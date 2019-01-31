@@ -24,45 +24,16 @@
  */
 package org.spongepowered.api.item.recipe.crafting;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.crafting.CraftingGridInventory;
+import org.spongepowered.api.item.recipe.RecipeOutput;
 
 import java.util.List;
 
 /**
  * The result of fulfilling a {@link CraftingRecipe}.
  */
-public final class CraftingResult {
-
-    private final ItemStackSnapshot result;
-    private final List<ItemStackSnapshot> remainingItems;
-
-    /**
-     * Creates a new {@link CraftingResult}.
-     *
-     * <p>Note that this may be replaced with a static of method in the
-     * future.</p>
-     *
-     * @param result The result of the crafting recipe
-     * @param remainingItems The remaining items to leave in the
-     *     crafting window
-     */
-    @SuppressWarnings("ConstantConditions")
-    public CraftingResult(ItemStackSnapshot result, List<ItemStackSnapshot> remainingItems) {
-        checkNotNull(result, "result");
-        checkArgument(result != ItemStackSnapshot.NONE, "The result must not be ItemStackSnapshot.NONE.");
-        checkNotNull(remainingItems, "remainingItems");
-        checkArgument(!remainingItems.isEmpty(), "The remainingItems list must not be empty."
-                + " It should contain ItemStackSnapshot.NONE values for slots which should be cleared.");
-
-        this.result = result;
-        this.remainingItems = ImmutableList.copyOf(remainingItems);
-    }
+public interface CraftingOutput extends RecipeOutput {
 
     /**
      * This method should be used instead of the
@@ -75,9 +46,7 @@ public final class CraftingResult {
      * @return The result of fulfilling the requirements of a
      *         {@link CraftingRecipe}
      */
-    public ItemStackSnapshot getResult() {
-        return this.result;
-    }
+    ItemStackSnapshot getResult();
 
     /**
      * Returns a list of {@link ItemStackSnapshot} to be set in the input
@@ -87,39 +56,5 @@ public final class CraftingResult {
      * @return A list of {@link ItemStackSnapshot}s to be set in the input
      *         {@link CraftingGridInventory}
      */
-    public List<ItemStackSnapshot> getRemainingItems() {
-        return this.remainingItems;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        CraftingResult that = (CraftingResult) o;
-
-        return this.result.equals(that.result) && this.remainingItems.equals(that.remainingItems);
-    }
-
-    @Override
-    public int hashCode() {
-        int result1 = this.result.hashCode();
-        result1 = 31 * result1 + this.remainingItems.hashCode();
-
-        return result1;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("result", this.result)
-                .add("remainingItems", this.remainingItems)
-                .toString();
-    }
-
+    List<ItemStackSnapshot> getRemainingItems();
 }

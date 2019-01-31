@@ -24,43 +24,9 @@
  */
 package org.spongepowered.api.item.recipe;
 
-import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-import org.spongepowered.api.world.World;
-
-import java.util.Optional;
-
 /**
- * A general interface for recipes.
- *
- * @param <O> The type of the recipe output
- * @param <I> The type of the recipe target
+ * Represents the output of a {@link Recipe}.
  */
-public interface Recipe<I extends RecipeInput, O extends RecipeOutput> extends CatalogType {
+public interface RecipeOutput {
 
-    /**
-     * A general result of this recipe. This result may be customized depending
-     * on the context.
-     *
-     * @return The exemplary result of this recipe
-     */
-    ItemStackSnapshot getExemplaryResult();
-
-    /**
-     * Checks if the given {@link RecipeInput} fits the required
-     * constraints to use this recipe.
-     *
-     * @return True if the given input matches this recipe's requirements
-     */
-    default boolean isValid(I input) {
-        return getOutput(input).isPresent();
-    }
-
-    /**
-     * Returns the {@link RecipeOutput} for the current inventory
-     * configuration and the {@link World} the player is in.
-     *
-     * @return A {@link RecipeOutput} if the arguments satisfy this recipe
-     */
-    Optional<O> getOutput(I input);
 }

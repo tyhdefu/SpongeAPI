@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.item.recipe.crafting;
+package org.spongepowered.api.item.recipe;
 
 import org.spongepowered.api.GameDictionary;
 import org.spongepowered.api.Sponge;
@@ -55,12 +55,23 @@ public interface Ingredient extends Predicate<ItemStack> {
     boolean test(ItemStack itemStack);
 
     /**
-     * Returns the list of {@link ItemStack}s used to display the ingredient in a recipe.
-     * These are not necessarily all the items that this Ingredient can match.
+     * Returns the list of {@link ItemStackSnapshot}s used to display the
+     * ingredient in a recipe. These are not necessarily all the items that
+     * this ingredient can match.
      *
-     * @return The list of items to display the Ingredient in a recipe.
+     * @return The list of items to display the ingredient in a recipe
      */
-    List<ItemStackSnapshot> displayedItems();
+    default List<ItemStackSnapshot> displayedItems() {
+        return getExemplaries();
+    }
+
+    /**
+     * Returns the list of {@link ItemStackSnapshot}s which are exemplary for the
+     * ingredient.
+     *
+     * @return The list of exemplary items for this ingredient
+     */
+    List<ItemStackSnapshot> getExemplaries();
 
     /**
      * Creates a new {@link Builder} to build an {@link Ingredient}.

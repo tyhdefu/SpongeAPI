@@ -25,14 +25,11 @@
 package org.spongepowered.api.item.recipe.crafting;
 
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.crafting.CraftingGridInventory;
 import org.spongepowered.api.item.recipe.Recipe;
 import org.spongepowered.api.world.World;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,7 +45,18 @@ import java.util.Optional;
  * <p>The requirements of a CraftingRecipe can be general, they just have to
  * eventually return a boolean given an crafting grid.</p>
  */
-public interface CraftingRecipe extends Recipe {
+public interface CraftingRecipe extends Recipe<CraftingInput, CraftingOutput> {
+
+    /**
+     * Checks if the given {@link CraftingGridInventory} fits the required
+     * constraints to craft this {@link CraftingGridInventory}.
+     *
+     * @param grid The {@link CraftingGridInventory} to check for validity
+     * @return True if the given input matches this recipe's requirements
+     */
+    default boolean isValid(CraftingGridInventory grid) {
+        return getOutput(grid).isPresent();
+    }
 
     /**
      * Checks if the given {@link CraftingGridInventory} fits the required
@@ -58,27 +66,29 @@ public interface CraftingRecipe extends Recipe {
      * @param world The world this recipe would be used in
      * @return True if the given input matches this recipe's requirements
      */
-    boolean isValid(CraftingGridInventory grid, World world);
+    default boolean isValid(CraftingGridInventory grid, World world) {
+        return getOutput(grid, world).isPresent();
+    }
 
     /**
-     * This method should only be called if
-     * {@link #isValid(CraftingGridInventory, World)} returns {@code true}.
+     * Returns the {@link CraftingOutput} for the current crafting grid
+     * configuration and the {@link World} the player is in.
      *
-     * <p>This method is preferred over the
-     * {@link CraftingRecipe#getExemplaryResult()} method, as it customizes
-     * the result further depending on the context.</p>
-     *
-     * <p>Implementing classes are advised to use the output of
-     * {@link CraftingRecipe#getExemplaryResult()}, modify it accordingly,
-     * and {@code return} it.</p>
+     * <p>Returns
+     * {@link Optional#empty()} if the arguments do not satisfy
+     * {@link #isValid(CraftingGridInventory, World)}.</p>
      *
      * @param grid The crafting input, typically 3x3 or 2x2
-     * @return An {@link ItemStackSnapshot}
+     * @return A {@link CraftingOutput} if the arguments satisfy
+     *     {@link #isValid(CraftingGridInventory, World)}, or
+     *     {@link Optional#empty()} if not
      */
-    ItemStackSnapshot getResult(CraftingGridInventory grid);
+    default Optional<CraftingOutput> getOutput(CraftingGridInventory grid) {
+        return getOutput(CraftingInput.of(grid));
+    }
 
     /**
-     * Returns the {@link CraftingResult} for the current crafting grid
+     * Returns the {@link CraftingOutput} for the current crafting grid
      * configuration and the {@link World} the player is in.
      *
      * <p>Returns
@@ -87,28 +97,13 @@ public interface CraftingRecipe extends Recipe {
      *
      * @param grid The crafting input, typically 3x3 or 2x2
      * @param world The world this recipe would be used in
-     * @return A {@link CraftingResult} if the arguments satisfy
+     * @return A {@link CraftingOutput} if the arguments satisfy
      *     {@link #isValid(CraftingGridInventory, World)}, or
      *     {@link Optional#empty()} if not
      */
-    default Optional<CraftingResult> getResult(CraftingGridInventory grid, World world) {
-        return isValid(grid, world) ? Optional.of(new CraftingResult(getResult(grid), getRemainingItems(grid))) : Optional.empty();
+    default Optional<CraftingOutput> getOutput(CraftingGridInventory grid, World world) {
+        return getOutput(CraftingInput.of(grid, world));
     }
-
-    /**
-     * This method should only be called if
-     * {@link #isValid(CraftingGridInventory, World)} returns {@code true}.
-     *
-     * <p>A list of items to be added to the inventory of the player when they
-     * craft the result. For example, if a player crafts a
-     * {@link ItemTypes#CAKE}, the empty buckets are returned to their
-     * inventory.</p>
-     *
-     * @param grid The crafting input, typically 3x3 or 2x2
-     * @return The list of items to be added to the inventory of the player
-     *         when the recipe has been fulfilled (possibly empty)
-     */
-    List<ItemStackSnapshot> getRemainingItems(CraftingGridInventory grid);
 
     /**
      * The group this CraftingRecipe belongs to or {@link Optional#empty()}

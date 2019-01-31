@@ -24,43 +24,31 @@
  */
 package org.spongepowered.api.item.recipe;
 
-import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-import org.spongepowered.api.world.World;
+import com.google.common.base.MoreObjects;
 
-import java.util.Optional;
+public final class RecipeResult<R extends Recipe<?, O>, O extends RecipeOutput> {
 
-/**
- * A general interface for recipes.
- *
- * @param <O> The type of the recipe output
- * @param <I> The type of the recipe target
- */
-public interface Recipe<I extends RecipeInput, O extends RecipeOutput> extends CatalogType {
+    private final R recipe;
+    private final O output;
 
-    /**
-     * A general result of this recipe. This result may be customized depending
-     * on the context.
-     *
-     * @return The exemplary result of this recipe
-     */
-    ItemStackSnapshot getExemplaryResult();
-
-    /**
-     * Checks if the given {@link RecipeInput} fits the required
-     * constraints to use this recipe.
-     *
-     * @return True if the given input matches this recipe's requirements
-     */
-    default boolean isValid(I input) {
-        return getOutput(input).isPresent();
+    public RecipeResult(R recipe, O output) {
+        this.recipe = recipe;
+        this.output = output;
     }
 
-    /**
-     * Returns the {@link RecipeOutput} for the current inventory
-     * configuration and the {@link World} the player is in.
-     *
-     * @return A {@link RecipeOutput} if the arguments satisfy this recipe
-     */
-    Optional<O> getOutput(I input);
+    public R getRecipe() {
+        return this.recipe;
+    }
+
+    public O getOutput() {
+        return this.output;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(getClass().getSimpleName())
+                .add("recipe", this.recipe.getKey())
+                .add("output", this.output)
+                .toString();
+    }
 }

@@ -24,10 +24,62 @@
  */
 package org.spongepowered.api.item.recipe;
 
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.CraftingOutput;
 import org.spongepowered.api.registry.CatalogRegistryModule;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A RecipeRegistry holds all registered recipes for a given game.
  */
-public interface RecipeRegistry<T extends Recipe> extends CatalogRegistryModule<T> {
+public interface RecipeRegistry extends CatalogRegistryModule<Recipe<?,?>> {
+
+    /**
+     * Retrieves the recipe which would be crafted when the player clicks
+     * the output slot.
+     *
+     * @param grid The crafting grid
+     * @param world The world the player is in
+     * @return The found {@link CraftingRecipe}, or {@link Optional#empty()}
+     *         if no recipe was found for this configuration
+     */
+    default <T extends Recipe<I, O>, I extends RecipeInput, O extends RecipeOutput> Optional<T> findMatchingRecipe(Class<T> recipeType, I input) {
+        return getAll().stream()
+                .filter(recipeType::isInstance)
+                .map(recipeType::cast)
+                .map(recipe -> recipe.isValid(input) ? recipe : null)
+                .filter(Objects::nonNull)
+                .findFirst();
+    }
+
+    /**
+     * Finds the matching recipe and creates the {@link CraftingOutput},
+     * which is then returned.
+     *
+     * @param inventory The inventory
+     * @param world The world the player is in
+     * @return The {@link RecipeOutput} if a recipe was found,
+     *         or {@link Optional#empty()} if not
+     */
+
+    default <R extends Recipe<I, O>, I extends RecipeInput, O extends RecipeOutput> Optional<RecipeResult<R, O>> getResult(
+            Class<R> recipeType, I input) {
+        return getAll().stream()
+                .filter(recipeType::isInstance)
+                .map(recipeType::cast)
+                .map(recipe -> recipe.getOutput(input).map(output -> new RecipeResult<>(recipe, output)).orElse(null))
+                .filter(Objects::nonNull)
+                .findFirst();
+    }
+
+    default <R extends Recipe<I, O>, I extends RecipeInput, O extends RecipeOutput> Collection<R> getRecipes(Class<R> recipeType) {
+        return getAll().stream()
+                .filter(recipeType::isInstance)
+                .map(recipeType::cast)
+                .collect(Collectors.toList());
+    }
 }
