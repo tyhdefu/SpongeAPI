@@ -67,10 +67,23 @@ public interface EconomyService extends ContextualService<Account> {
      * Creates a {@link Account} for a given identifier.
      *
      * <p>If the identifier already exists, the account will be returned instead.</p>
+     *
      * @param identifier The identifier
      * @return The {@link Account} or {@link Optional#empty()} if it failed
      */
     Optional<Account> createAccount(String identifier);
+
+    /**
+     * Creates a {@link Account} for a given identifier
+     *
+     * <p>If the identifier already exists, the account will be returned instead.</p>
+     *
+     * <p>It is left up to the implementation to handle virtual accounts and their differences, if any.</po>
+     *
+     * @param identifier The identifier
+     * @return The {@link Account} or {@link Optional#empty()} if it failed
+     */
+    Optional<Account> createVirtualAccount(String identifier);
 
     /**
      * Gets the {@link Account} with the specified identifier.
