@@ -25,13 +25,9 @@
 package org.spongepowered.api.service.economy;
 
 import org.spongepowered.api.service.context.ContextualService;
-import org.spongepowered.api.service.economy.account.Account;
-import org.spongepowered.api.service.economy.account.UniqueAccount;
-import org.spongepowered.api.service.economy.account.VirtualAccount;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Represents a service for managing a server economy.
@@ -68,51 +64,26 @@ public interface EconomyService extends ContextualService<Account> {
     Set<Currency> getCurrencies();
 
     /**
-     * Returns whether a {@link UniqueAccount} exists with the specified {@link UUID}.
+     * Creates a {@link Account} for a given identifier.
      *
-     * @param uuid The {@link UUID} of the account to check for
-     * @return Whether a {@link UniqueAccount} exists with the specified {@link UUID}
+     * <p>If the identifier already exists, the account will be returned instead.</p>
+     * @param identifier The identifier
+     * @return The {@link Account} or {@link Optional#empty()} if it failed
      */
-    boolean hasAccount(UUID uuid);
+    Optional<Account> createAccount(String identifier);
 
     /**
-     * Returns whether an {@link Account} with the specified identifier exists.
-     *
-     * <p>Depending on the implementation, the {@link Account} may be a
-     * {@link UniqueAccount} or a {@link VirtualAccount}.
-     *
-     * @param identifier The identifier of the account to check for
-     * @return Whether an {@link Account} with the specified identifier exists
-     */
-    boolean hasAccount(String identifier);
-
-    /**
-     * Gets the {@link UniqueAccount} for the user with the specified {@link UUID}.
-     *
-     * <p>If an account does not already exists with the specified {@link UUID},
-     * it will be created.</p>
-     *
-     * <p>Creation might fail if the provided {@link UUID} does not correspond to
-     * an actual player, or for an implementation-defined reason.</p>
-     *
-     * @param uuid The {@link UUID} of the account to get.
-     * @return The {@link UniqueAccount}, if available.
-     */
-    Optional<UniqueAccount> getOrCreateAccount(UUID uuid);
-
-    /**
-     * Gets the {@link VirtualAccount} with the specified identifier.
-     *
-     * <p>Depending on the implementation, the {@link Account} may be a
-     * {@link UniqueAccount} or a {@link VirtualAccount}.</p>
-     *
-     * <p>If an account does not already exists with the specified identifier,
-     * it will be created.</p>
-     *
-     * <p>Creation may fail for an implementation-defined reason.</p>
+     * Gets the {@link Account} with the specified identifier.
      *
      * @param identifier The identifier of the account to get.
      * @return The {@link Account}, if available.
      */
-    Optional<Account> getOrCreateAccount(String identifier);
+    Optional<Account> getAccount(String identifier);
+
+    /**
+     * Returns the {@link Set} of all stored {@link Account} objects.
+     *
+     * @return The {@link Set} of all stored {@link Account} objects.
+     */
+    Set<Account> getAllAccounts();
 }

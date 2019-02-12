@@ -26,7 +26,7 @@ package org.spongepowered.api.service.economy.transaction;
 
 import org.spongepowered.api.service.context.Context;
 import org.spongepowered.api.service.economy.Currency;
-import org.spongepowered.api.service.economy.account.Account;
+import org.spongepowered.api.service.economy.Account;
 
 import java.math.BigDecimal;
 import java.util.Set;

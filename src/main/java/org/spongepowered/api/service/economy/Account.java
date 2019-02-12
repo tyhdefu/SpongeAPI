@@ -22,16 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.service.economy.account;
+package org.spongepowered.api.service.economy;
 
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.service.context.Context;
 import org.spongepowered.api.service.context.Contextual;
-import org.spongepowered.api.service.economy.Currency;
-import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.service.economy.transaction.TransactionResult;
 import org.spongepowered.api.service.economy.transaction.TransferResult;
 import org.spongepowered.api.text.Text;
@@ -39,21 +34,9 @@ import org.spongepowered.api.text.Text;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Represents an account, which stores amounts of various {@link Currency currencies}.
- *
- * <p>Accounts come in two varieties: {@link UniqueAccount user accounts}
- * and {@link VirtualAccount} virtual accounts.
- *
- * Unique accounts are bound to a {@link UUID}, usually of a particular
- * {@link User}'s {@link GameProfile}.
- *
- * Virtual accounts are identified by a String identifier, which may have any
- * value. They are not tied to any {@link Entity}, player or otherwise. Virtual
- * accounts may be used for purposes such as bank accounts, non-player
- * {@link Entity} accounts, or other things.</p>
  */
 public interface Account extends Contextual {
 
@@ -61,8 +44,7 @@ public interface Account extends Contextual {
      * Gets the display name for this account.
      *
      * <p>This should be used by plugins to get a human-readable name for an
-     * account, regardless of the specific type ({@link UniqueAccount} or
-     * {@link VirtualAccount}).</p>
+     * account.</p>
      *
      * <p>Its contents are dependent on the provider of {@link EconomyService}.
      * For example, an economy plugin could allow players to configure the
