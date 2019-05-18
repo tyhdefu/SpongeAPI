@@ -48,7 +48,7 @@ public interface ResponseMessageHandler<M extends RequestMessage<R>, R extends R
      *        {@link org.spongepowered.api.Platform.Type#CLIENT}
      *        or {@link org.spongepowered.api.Platform.Type#SERVER})
      */
-    void handleResponse(R responseMessage, M requestMessage, ClientConnection connection, Platform.Type side);
+    void handleResponse(R responseMessage, M requestMessage, RemoteConnection connection, Platform.Type side);
 
     /**
      * Handles the failure of a {@link ResponseMessage}. The {@link MessageException} which

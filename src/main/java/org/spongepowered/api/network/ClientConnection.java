@@ -25,6 +25,7 @@
 package org.spongepowered.api.network;
 
 import org.spongepowered.api.profile.GameProfile;
+import org.spongepowered.api.text.Text;
 
 /**
  * Represents a connection between a minecraft client and the server.
@@ -37,4 +38,18 @@ public interface ClientConnection extends RemoteConnection {
      * @return The client's profile
      */
     GameProfile getProfile();
+
+    /**
+     * Disconnects the connection, showing the default disconnection reason.
+     * (the translation key {@code disconnect.disconnected})
+     */
+    void disconnect();
+
+    /**
+     * Disconnects the connection with the given reason.
+     *
+     * @param reason The reason for the disconnection
+     */
+    void disconnect(Text reason);
+
 }

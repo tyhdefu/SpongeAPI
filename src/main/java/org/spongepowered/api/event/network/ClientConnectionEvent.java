@@ -32,9 +32,12 @@ import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.message.MessageEvent;
 import org.spongepowered.api.network.ClientConnection;
+import org.spongepowered.api.network.message.MessageChannel;
+import org.spongepowered.api.network.raw.login.RawLoginDataChannel;
 import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.service.ban.BanService;
 import org.spongepowered.api.service.whitelist.WhitelistService;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TextRepresentable;
 import org.spongepowered.api.util.Transform;
 import org.spongepowered.api.world.World;
@@ -50,7 +53,7 @@ import java.net.InetAddress;
  *
  * <p>The events are fired in the following order:</p>
  *
- * <p>#Auth -> #Login -> {@link SpawnEntityEvent} -> #Join</p>
+ * <p>#Auth -> #Handshake -> #Login -> {@link SpawnEntityEvent} -> #Join</p>
  *
  * <p>{@link SpawnEntityEvent} is still fired for players, for consistency.
  * However, the player is not at a well-defined state at that point. It's
@@ -84,11 +87,39 @@ public interface ClientConnectionEvent extends Event {
 
     /**
      * Called after the client authenticates and attempts to login to the
-     * server.
+     * server. This is the phase where plugins can perform a handshake with
+     * the client by sending login related messages and requests.
+     *
+     * <p>During this event, it's possible to use the {@link RawLoginDataChannel}
+     * and the {@link MessageChannel} to send requests to the client. As long as
+     * there's requests going to the client, the connection will stay in the
+     * handshake phase and will not continue to the {@link Login} event.</p>
+     *
+     * <p>For example, a plugin sends a message to the client to request its
+     * client side plugin version. The client responds and the plugin handles
+     * the response. If the plugin decides to send another message, the plugin
+     * handshake phase will stay active. If the plugin doesn't send a message,
+     * it can assumed that the plugin handshake is finished.</p>
+     *
+     * <p>During the lifetime of the handshake phase, a {@link ClientConnection}
+     * can be terminated by calling {@link ClientConnection#disconnect(Text)}.</p>
+     */
+    interface Handshake extends ClientConnectionEvent {
+
+        /**
+         * Gets the {@link ClientConnection}.
+         *
+         * @return The client connection
+         */
+        ClientConnection getConnection();
+    }
+
+    /**
+     * Called after the server finished its handshake with the client.
      *
      * <p>Note: This event is fired after #Auth and is NOT async. Any changes
      * required for the {@link Player}s {@link Transform} should be done during
-     * this event and NOT during #Join. </p>
+     * this event and NOT during #Join.</p>
      *
      * <p>If the registered {@link BanService} or {@link WhitelistService}
      * indicates that a player should not be allowed to join (
