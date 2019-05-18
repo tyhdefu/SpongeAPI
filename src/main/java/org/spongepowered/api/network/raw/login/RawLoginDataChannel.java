@@ -28,6 +28,7 @@ import org.spongepowered.api.Platform;
 import org.spongepowered.api.network.ChannelBinding;
 import org.spongepowered.api.network.ChannelBuf;
 import org.spongepowered.api.network.ClientConnection;
+import org.spongepowered.api.network.NoResponseMessageException;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -57,6 +58,10 @@ public interface RawLoginDataChannel extends ChannelBinding {
     /**
      * Sends a request message {@link ChannelBuf} to
      * the {@link ClientConnection}.
+     *
+     * <p>The {@link CompletableFuture} may fail exceptionally by a
+     * {@link NoResponseMessageException} if there wasn't a valid response
+     * received for the given request.</p>
      *
      * @param connection The client connection to send the request to
      * @param payload The payload provider of the request
