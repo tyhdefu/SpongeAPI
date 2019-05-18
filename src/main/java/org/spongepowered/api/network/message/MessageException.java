@@ -22,25 +22,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
-
-import org.spongepowered.api.Platform;
+package org.spongepowered.api.network.message;
 
 /**
- * Represents a handler for a message that was received over the network.
+ * Represents a {@link Exception} which can be thrown
+ * when dealing with {@link Message}s.
  */
-@FunctionalInterface
-public interface MessageHandler<M extends Message> {
+public class MessageException extends Exception {
 
-    /**
-     * Handles the message sent by a client connection.
-     *
-     * @param message The message received
-     * @param connection The connection that sent the message
-     * @param side The side the message was received on (
-     *        {@link org.spongepowered.api.Platform.Type#CLIENT}
-     *        or {@link org.spongepowered.api.Platform.Type#SERVER})
-     */
-    void handleMessage(M message, RemoteConnection connection, Platform.Type side);
+    public MessageException() {
+        super();
+    }
 
+    public MessageException(String message) {
+        super(message);
+    }
+
+    public MessageException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public MessageException(Throwable cause) {
+        super(cause);
+    }
 }

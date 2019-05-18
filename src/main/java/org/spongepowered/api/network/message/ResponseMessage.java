@@ -22,30 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
-
-import org.spongepowered.api.network.message.MessageException;
-import org.spongepowered.api.network.message.RequestMessage;
+package org.spongepowered.api.network.message;
 
 /**
- * Represents a {@link Exception} which is thrown when no response is received
- * when a {@link RequestMessage} is sent to a client or server.
+ * Represents the response message within a request/response message pair.
  */
-public class NoResponseMessageException extends MessageException {
+public interface ResponseMessage extends Message {
 
-    public NoResponseMessageException() {
-        super();
-    }
-
-    public NoResponseMessageException(String message) {
-        super(message);
-    }
-
-    public NoResponseMessageException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NoResponseMessageException(Throwable cause) {
-        super(cause);
-    }
 }

@@ -22,28 +22,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
-
-/**
- * A message transmitted over the connection of a client and a server.
- *
- * <p>Note to plugin implementations: This must have a publicly accessible
- * no-args constructor.</p>
- */
-public interface Message {
-
-    /**
-     * Read the data from the channel buffer into this message.
-     *
-     * @param buf The buffer to read from
-     */
-    void readFrom(ChannelBuf buf);
-
-    /**
-     * Write the data from this message to the channel buffer.
-     *
-     * @param buf The buffer to write to
-     */
-    void writeTo(ChannelBuf buf);
-
-}
+@org.spongepowered.api.util.annotation.NonnullByDefault
+package org.spongepowered.api.network.raw.login;

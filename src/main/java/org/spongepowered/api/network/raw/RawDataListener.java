@@ -22,30 +22,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.raw;
 
-import org.spongepowered.api.network.message.MessageException;
-import org.spongepowered.api.network.message.RequestMessage;
+import org.spongepowered.api.Platform;
+import org.spongepowered.api.network.ChannelBuf;
+import org.spongepowered.api.network.ClientConnection;
 
 /**
- * Represents a {@link Exception} which is thrown when no response is received
- * when a {@link RequestMessage} is sent to a client or server.
+ * Represents a listener for data being sent to a raw channel.
  */
-public class NoResponseMessageException extends MessageException {
+@FunctionalInterface
+public interface RawDataListener {
 
-    public NoResponseMessageException() {
-        super();
-    }
-
-    public NoResponseMessageException(String message) {
-        super(message);
-    }
-
-    public NoResponseMessageException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NoResponseMessageException(Throwable cause) {
-        super(cause);
-    }
+    /**
+     * Handles the given {@link ChannelBuf} data sent by a remote connection.
+     *
+     * @param data The raw data
+     * @param connection The client connection
+     * @param side The side the data was received on (
+     *        {@link org.spongepowered.api.Platform.Type#CLIENT}
+     *        or {@link org.spongepowered.api.Platform.Type#SERVER})
+     */
+    void handlePayload(ChannelBuf data, ClientConnection connection, Platform.Type side);
 }

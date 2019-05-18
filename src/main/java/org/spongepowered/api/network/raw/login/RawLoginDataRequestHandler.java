@@ -22,30 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.raw.login;
 
-import org.spongepowered.api.network.message.MessageException;
-import org.spongepowered.api.network.message.RequestMessage;
+import org.spongepowered.api.Platform;
+import org.spongepowered.api.network.ChannelBuf;
+import org.spongepowered.api.network.NoResponseMessageException;
+import org.spongepowered.api.network.RemoteConnection;
 
 /**
- * Represents a {@link Exception} which is thrown when no response is received
- * when a {@link RequestMessage} is sent to a client or server.
+ * Handles a raw login data request.
  */
-public class NoResponseMessageException extends MessageException {
+@FunctionalInterface
+public interface RawLoginDataRequestHandler {
 
-    public NoResponseMessageException() {
-        super();
-    }
-
-    public NoResponseMessageException(String message) {
-        super(message);
-    }
-
-    public NoResponseMessageException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NoResponseMessageException(Throwable cause) {
-        super(cause);
-    }
+    /**
+     * Handles the request message {@link ChannelBuf} for the given
+     * {@link RemoteConnection} and returns a response.
+     *
+     * <p>Throwing a {@link NoResponseMessageException} will result in
+     * a {@link NoResponseMessageException} on the other endpoint of
+     * the connection.</p>
+     *
+     * @param request The request channel buf
+     * @param connection The connection that received the message
+     * @param side The platform side this request is handled on
+     * @return The response message
+     */
+    ChannelBuf handleMessage(ChannelBuf request, RemoteConnection connection, Platform.Type side);
 }

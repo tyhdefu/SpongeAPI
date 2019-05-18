@@ -22,11 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.message;
 
-import org.spongepowered.api.Platform;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.network.ChannelBinding;
+import org.spongepowered.api.network.ClientConnection;
+import org.spongepowered.api.network.NoResponseMessageException;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -46,7 +49,17 @@ public interface MessageChannel extends ChannelBinding {
      *        the class must have a publicly accessible no-args constructor
      * @param messageId A unique ID for this message
      */
-    void registerMessage(Class<? extends Message> messageClass, int messageId);
+    <M extends Message> MessageBinding<M> register(Class<M> messageClass, int messageId);
+
+    /**
+     * Gets the {@link MessageBinding} for the given message class, if the message
+     * type is registered to this channel.
+     *
+     * @param messageClass The message class
+     * @param <M> The type of the message
+     * @return The message binding, if found
+     */
+    <M extends Message> Optional<MessageBinding<M>> getBinding(Class<M> messageClass);
 
     /**
      * Register a request/response message class pair to this channel. A receiving handler
@@ -59,85 +72,20 @@ public interface MessageChannel extends ChannelBinding {
      * @param requestMessageClass The class of the request message being registered
      * @param responseMessageClass The class of the response message being registered
      */
-    <M extends RequestMessage<R>, R extends ResponseMessage> void registerMessage(
+    <M extends RequestMessage<R>, R extends ResponseMessage> TransactionalMessageBinding<M, R> register(
             Class<M> requestMessageClass, Class<R> responseMessageClass, int messageId);
 
     /**
-     * Register a request/response message class pair to this channel. A receiving handler
-     * isn't required when sending the request using {@link #sendTo(ClientConnection, RequestMessage)}.
-     * Request/response messages will be able to be send in both directions.
+     * Gets the {@link TransactionalMessageBinding} for the given {@link RequestMessage} class, if
+     * the type is registered to this channel as a transactional binding.
      *
-     * <p>The message id is used to identify this message class as it is
-     * sent and received across the network, it is encoded as a varint.</p>
-     *
-     * @param messageId A unique id for this request/response message pair
-     * @param requestMessageClass The class of the request message being registered
-     * @param responseMessageClass The class of the response message being registered
-     * @param requestHandler The handler of the request message which will produce responses
+     * @param requestMessage The request message class
+     * @param <M> The type of the request message
+     * @param <R> The type of the response message
+     * @return The transactional message binding, if found
      */
-    <M extends RequestMessage<R>, R extends ResponseMessage> void registerMessage(Class<M> requestMessageClass, Class<R> responseMessageClass,
-            int messageId, RequestMessageHandler<M, R> requestHandler);
-
-    /**
-     * Register a request/response message class pair to this channel. A receiving handler
-     * isn't required when sending the request using {@link #sendTo(ClientConnection, RequestMessage)}.
-     * Request messages will be handled on a specific platform side, this means that requests
-     * can only be send in one direction and responses in the other direction.
-     *
-     * <p>The message id is used to identify this message class as it is
-     * sent and received across the network, it is encoded as a varint.</p>
-     *
-     * @param messageId A unique id for this request/response message pair
-     * @param requestMessageClass The class of the request message being registered
-     * @param responseMessageClass The class of the response message being registered
-     * @param requestHandleSide The side to listen to handle request messages on
-     * @param requestHandler The handler of the request message which will produce responses
-     */
-    <M extends RequestMessage<R>, R extends ResponseMessage> void registerMessage(Class<M> requestMessageClass, Class<R> responseMessageClass,
-            int messageId, Platform.Type requestHandleSide, RequestMessageHandler<M, R> requestHandler);
-
-    /**
-     * Register a message class to this channel and a handler for receiving
-     * the message. The handler is invoked every time the message is sent to
-     * <strong>either</strong> side.
-     *
-     * <p>The message ID is used to identify this message class as it is
-     * sent and received across the network, it is encoded as a varint.</p>
-     *
-     * @param messageClass The class of the message being registered
-     * @param messageId A unique ID for this message
-     * @param handler The handler that acts upon the message being received
-     */
-    <M extends Message> void registerMessage(Class<M> messageClass, int messageId, MessageHandler<M> handler);
-
-    /**
-     * Register a message class to this channel and a handler for receiving
-     * the message. The handler is invoked every time the message is sent to
-     * the given side.
-     *
-     * @param messageClass The class of the message being registered
-     * @param messageId A unique ID for this message
-     * @param side The side to listen to messages on
-     * @param handler The handler that acts upon the message being received
-     */
-    <M extends Message> void registerMessage(Class<M> messageClass, int messageId, Platform.Type side, MessageHandler<M> handler);
-
-    /**
-     * Register a {@link MessageHandler} for a {@link Message}.
-     * @param messageClass The class to handle
-     * @param side The side being handled
-     * @param handler The handler
-     * @param <M> The type of message
-     */
-    <M extends Message> void addHandler(Class<M> messageClass, Platform.Type side, MessageHandler<M> handler);
-
-    /**
-     * Register a {@link MessageHandler} for a {@link Message}
-     * @param messageClass The class to handle
-     * @param handler The handler
-     * @param <M> The type of message
-     */
-    <M extends Message> void addHandler(Class<M> messageClass, MessageHandler<M> handler);
+    <M extends RequestMessage<R>, R extends ResponseMessage> Optional<TransactionalMessageBinding<M, R>> getTransactionalBinding(
+            Class<M> requestMessage);
 
     /**
      * Sends the message to the player using this channel. The message may
@@ -218,7 +166,13 @@ public interface MessageChannel extends ChannelBinding {
      * is no registered handler. This <strong>must</strong> be called from
      * the client side.
      *
+     * <p>Calling this during the login phase is currently not supported, only
+     * responses to {@link RequestMessage}s by {@link RequestMessageHandler}s
+     * are. Doing so will result in a {@link IllegalStateException} when attempting
+     * to use the method.</p>
+     *
      * @param message The message to send
+     * @throws IllegalStateException If the server connection isn't in the play phase
      */
     void sendToServer(Message message);
 

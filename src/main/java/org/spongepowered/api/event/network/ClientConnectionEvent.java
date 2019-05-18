@@ -24,7 +24,6 @@
  */
 package org.spongepowered.api.event.network;
 
-import org.spongepowered.api.util.Transform;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Cancellable;
@@ -33,12 +32,11 @@ import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.message.MessageEvent;
 import org.spongepowered.api.network.ClientConnection;
-import org.spongepowered.api.network.RemoteConnection;
-import org.spongepowered.api.network.login.LoginChannelContext;
 import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.service.ban.BanService;
 import org.spongepowered.api.service.whitelist.WhitelistService;
 import org.spongepowered.api.text.TextRepresentable;
+import org.spongepowered.api.util.Transform;
 import org.spongepowered.api.world.World;
 
 import java.net.InetAddress;
@@ -116,7 +114,7 @@ public interface ClientConnectionEvent extends Event {
         /**
          * Gets the {@link ClientConnection}.
          *
-         * @return The remote connection
+         * @return The client connection
          */
         ClientConnection getConnection();
 

@@ -22,33 +22,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.message;
 
 import org.spongepowered.api.Platform;
+import org.spongepowered.api.network.ClientConnection;
+import org.spongepowered.api.network.NoResponseMessageException;
+import org.spongepowered.api.network.RemoteConnection;
 
 /**
- * Represents a message handler for {@link RequestMessage}s.
+ * A specialized {@link MessageHandler} to handle {@link ResponseMessage}s.
  *
- * @param <M> The request message type
- * @param <R> The response message type
+ * @param <M> The type of the request message
+ * @param <R> The type of the response message
  */
-public interface RequestMessageHandler<M extends RequestMessage<R>, R extends ResponseMessage> {
+@FunctionalInterface
+public interface ResponseMessageHandler<M extends RequestMessage<R>, R extends ResponseMessage> {
 
     /**
-     * Handles the {@link RequestMessage} which was send by a specific
-     * {@link RemoteConnection}. A proper {@link ResponseMessage} should
-     * be answered with.
+     * Handles the {@link ResponseMessage} sent by a client connection.
      *
-     * <p>If this handlers fails with an {@link Exception}, then
-     * will the other endpoint of the connection will receive a
-     * {@link NoResponseMessageException}.</p>
-     *
-     * @param message The received request message
+     * @param responseMessage The response message that was received
+     * @param requestMessage The message that was send to request the response
      * @param connection The connection that sent the message
      * @param side The side the message was received on (
      *        {@link org.spongepowered.api.Platform.Type#CLIENT}
      *        or {@link org.spongepowered.api.Platform.Type#SERVER})
      */
-    R handleMessage(M message, RemoteConnection connection, Platform.Type side);
+    void handleResponse(R responseMessage, M requestMessage, ClientConnection connection, Platform.Type side);
 
+    /**
+     * Handles the failure of a {@link ResponseMessage}. The {@link MessageException} which
+     * causes the failure will usually be a {@link NoResponseMessageException}, this is caused
+     * by the other endpoint ignoring the request or failing to send a response.
+     *
+     * @param requestMessage The message that was send to request the response
+     * @param connection The remote connection that received the failure
+     * @param side The platform side the failure is received on
+     * @param exception The exception that caused the failure
+     */
+    default void handleFailure(M requestMessage, RemoteConnection connection, Platform.Type side, MessageException exception) {
+    }
 }

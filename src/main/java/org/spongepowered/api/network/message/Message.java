@@ -22,24 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.message;
 
-import org.spongepowered.api.Platform;
+import org.spongepowered.api.network.ChannelBuf;
 
 /**
- * Represents a listener for data being sent to a raw channel.
+ * A message transmitted over the connection of a client and a server.
+ *
+ * <p>Note to plugin implementations: This must have a publicly accessible
+ * no-args constructor.</p>
  */
-@FunctionalInterface
-public interface RawDataListener {
+public interface Message {
 
     /**
-     * Handles the given {@link ChannelBuf} data sent by a remote connection.
+     * Read the data from the channel buffer into this message.
      *
-     * @param data The raw data
-     * @param connection The remote connection
-     * @param side The side the data was received on (
-     *        {@link org.spongepowered.api.Platform.Type#CLIENT}
-     *        or {@link org.spongepowered.api.Platform.Type#SERVER})
+     * @param buf The buffer to read from
      */
-    void handlePayload(ChannelBuf data, RemoteConnection connection, Platform.Type side);
+    void readFrom(ChannelBuf buf);
+
+    /**
+     * Write the data from this message to the channel buffer.
+     *
+     * @param buf The buffer to write to
+     */
+    void writeTo(ChannelBuf buf);
+
 }

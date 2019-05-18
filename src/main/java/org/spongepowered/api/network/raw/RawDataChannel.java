@@ -22,15 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.raw;
 
 import org.spongepowered.api.Platform;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.network.ChannelBinding;
+import org.spongepowered.api.network.ChannelBuf;
+import org.spongepowered.api.network.ClientConnection;
+import org.spongepowered.api.network.raw.login.RawLoginDataChannel;
 
 import java.util.function.Consumer;
 
 /**
- * Represents a channel that sends and receives raw data.
+ * Represents a channel that sends and receives raw data. This
+ * channel cannot be used during the login phase of a
+ * {@link ClientConnection}, use {@link RawLoginDataChannel}
+ * instead.
  */
 public interface RawDataChannel extends ChannelBinding {
 

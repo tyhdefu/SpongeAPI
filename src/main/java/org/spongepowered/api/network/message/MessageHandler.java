@@ -22,30 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.message;
 
-import org.spongepowered.api.network.message.MessageException;
-import org.spongepowered.api.network.message.RequestMessage;
+import org.spongepowered.api.Platform;
+import org.spongepowered.api.network.RemoteConnection;
 
 /**
- * Represents a {@link Exception} which is thrown when no response is received
- * when a {@link RequestMessage} is sent to a client or server.
+ * Represents a handler for a message that was received over the network.
  */
-public class NoResponseMessageException extends MessageException {
+@FunctionalInterface
+public interface MessageHandler<M extends Message> {
 
-    public NoResponseMessageException() {
-        super();
-    }
-
-    public NoResponseMessageException(String message) {
-        super(message);
-    }
-
-    public NoResponseMessageException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NoResponseMessageException(Throwable cause) {
-        super(cause);
-    }
+    /**
+     * Handles the message sent by a client connection.
+     *
+     * @param message The message received
+     * @param connection The connection that sent the message
+     * @param side The side the message was received on
+     */
+    void handleMessage(M message, RemoteConnection connection, Platform.Type side);
 }
