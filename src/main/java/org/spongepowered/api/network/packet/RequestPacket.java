@@ -22,30 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.message;
-
-import org.spongepowered.api.network.ChannelBuf;
+package org.spongepowered.api.network.packet;
 
 /**
- * A message transmitted over the connection of a client and a server.
+ * Represents the request packet within a request/response packet pair.
  *
- * <p>Note to plugin implementations: This must have a publicly accessible
- * no-args constructor.</p>
+ * @param <R> The response packet type
  */
-public interface Message {
-
-    /**
-     * Read the data from the channel buffer into this message.
-     *
-     * @param buf The buffer to read from
-     */
-    void readFrom(ChannelBuf buf);
-
-    /**
-     * Write the data from this message to the channel buffer.
-     *
-     * @param buf The buffer to write to
-     */
-    void writeTo(ChannelBuf buf);
+public interface RequestPacket<R extends ResponsePacket> extends Packet {
 
 }

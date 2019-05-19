@@ -22,11 +22,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.message;
+package org.spongepowered.api.network.packet;
+
+import org.spongepowered.api.Platform;
+import org.spongepowered.api.network.NoResponseException;
+import org.spongepowered.api.network.RemoteConnection;
 
 /**
- * Represents the response message within a request/response message pair.
+ * Represents a packet handler for {@link RequestPacket}s.
+ *
+ * @param <P> The request packet type
+ * @param <R> The response packet type
  */
-public interface ResponseMessage extends Message {
+public interface RequestPacketHandler<P extends RequestPacket<R>, R extends ResponsePacket> {
+
+    /**
+     * Handles the {@link RequestPacket} which was send by a specific
+     * {@link RemoteConnection}. A proper {@link ResponsePacket} should
+     * be answered with.
+     *
+     * <p>If this handler fails with an {@link Exception}, then
+     * will other side of the connection end up with a
+     * {@link NoResponseException}.</p>
+     *
+     * @param packet The received request packet
+     * @param connection The connection that sent the packet
+     * @param side The side the packet was received on (
+     *        {@link org.spongepowered.api.Platform.Type#CLIENT}
+     *        or {@link org.spongepowered.api.Platform.Type#SERVER})
+     */
+    R handleRequest(P packet, RemoteConnection connection, Platform.Type side);
 
 }

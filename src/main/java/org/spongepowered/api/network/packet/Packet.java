@@ -22,27 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.message;
+package org.spongepowered.api.network.packet;
+
+import org.spongepowered.api.network.ChannelBuf;
 
 /**
- * Represents a {@link Exception} which can be thrown
- * when dealing with {@link Message}s.
+ * A packet transmitted over the connection of a client and a server.
+ *
+ * <p>Note to plugin implementations: This must have a no-args constructor.</p>
  */
-public class MessageException extends Exception {
+public interface Packet {
 
-    public MessageException() {
-        super();
-    }
+    /**
+     * Read the data from the channel buffer into this message.
+     *
+     * @param buf The buffer to read from
+     */
+    void readFrom(ChannelBuf buf);
 
-    public MessageException(String message) {
-        super(message);
-    }
+    /**
+     * Write the data from this message to the channel buffer.
+     *
+     * @param buf The buffer to write to
+     */
+    void writeTo(ChannelBuf buf);
 
-    public MessageException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public MessageException(Throwable cause) {
-        super(cause);
-    }
 }

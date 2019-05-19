@@ -26,7 +26,7 @@ package org.spongepowered.api.network.raw.login;
 
 import org.spongepowered.api.Platform;
 import org.spongepowered.api.network.ChannelBuf;
-import org.spongepowered.api.network.NoResponseMessageException;
+import org.spongepowered.api.network.NoResponseException;
 import org.spongepowered.api.network.RemoteConnection;
 
 /**
@@ -39,8 +39,8 @@ public interface RawLoginDataRequestHandler {
      * Handles the request message {@link ChannelBuf} for the given
      * {@link RemoteConnection} and returns a response.
      *
-     * <p>Throwing a {@link NoResponseMessageException} will result in
-     * a {@link NoResponseMessageException} on the other endpoint of
+     * <p>Throwing a {@link NoResponseException} will result in
+     * a {@link NoResponseException} on the other endpoint of
      * the connection.</p>
      *
      * @param request The request channel buf

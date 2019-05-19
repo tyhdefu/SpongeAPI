@@ -22,25 +22,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.message;
-
-import org.spongepowered.api.Platform;
-import org.spongepowered.api.network.RemoteConnection;
-
-/**
- * Represents a handler for a message that was received over the network.
- */
-@FunctionalInterface
-public interface MessageHandler<M extends Message> {
-
-    /**
-     * Handles the message sent by a client connection.
-     *
-     * @param message The message received
-     * @param connection The connection that sent the message
-     * @param side The side the message was received on (
-     *        {@link org.spongepowered.api.Platform.Type#CLIENT}
-     *        or {@link org.spongepowered.api.Platform.Type#SERVER})
-     */
-    void handleMessage(M message, RemoteConnection connection, Platform.Type side);
-}
+@org.spongepowered.api.util.annotation.NonnullByDefault
+package org.spongepowered.api.network.packet;

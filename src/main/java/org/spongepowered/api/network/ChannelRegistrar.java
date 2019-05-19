@@ -26,7 +26,7 @@ package org.spongepowered.api.network;
 
 import org.spongepowered.api.CatalogKey;
 import org.spongepowered.api.Platform;
-import org.spongepowered.api.network.message.MessageChannel;
+import org.spongepowered.api.network.packet.PacketChannel;
 
 import java.util.Optional;
 import java.util.Set;
@@ -56,7 +56,7 @@ public interface ChannelRegistrar {
     Optional<ChannelBinding> getChannel(CatalogKey channelKey);
 
     /**
-     * Gets or creates a {@link MessageChannel} by the
+     * Gets or creates a {@link PacketChannel} by the
      * given name. If the channel exists and is a indexed message channel, then
      * it is returned. If the channel is not an indexed message channel, then
      * {@link IllegalStateException} is thrown. Otherwise, a new channel is

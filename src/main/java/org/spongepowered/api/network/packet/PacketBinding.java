@@ -22,50 +22,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.message;
+package org.spongepowered.api.network.packet;
 
 import org.spongepowered.api.Platform;
 
 /**
- * Represents a binding of a {@link Message} type
- * in a {@link MessageChannel}.
+ * Represents a binding of a {@link Packet} type
+ * in a {@link PacketChannel}.
  *
- * @param <M> The message type
+ * @param <M> The packet type
  */
-public interface MessageBinding<M extends Message> {
+public interface PacketBinding<M extends Packet> {
 
     /**
-     * Gets the opcode that is assigned to the message.
+     * Gets the opcode that is assigned to the packet.
      *
      * @return The opcode
      */
     int getOpcode();
 
     /**
-     * Gets the type of the {@link Message}.
+     * Gets the type of the {@link Packet}.
      *
-     * @return The message type
+     * @return The packet type
      */
-    Class<M> getMessageType();
+    Class<M> getPacketType();
 
     /**
-     * Adds a {@link MessageHandler} a handler for receiving the message
-     * of this binding. The handler is invoked every time the message is sent to
+     * Adds a {@link PacketHandler} a handler for receiving the packet
+     * of this binding. The handler is invoked every time the packet is sent to
      * the given side.
      *
      * @param side The platform side the handler should be used on
      * @param handler The handler to add
      * @return This binding, for chaining
      */
-    MessageBinding<M> addHandler(Platform.Type side, MessageHandler<? super M> handler);
+    PacketBinding<M> addHandler(Platform.Type side, PacketHandler<? super M> handler);
 
     /**
-     * Adds a {@link MessageHandler} a handler for receiving the message
-     * of this binding. The handler is invoked every time the message is
+     * Adds a {@link PacketHandler} a handler for receiving the packet
+     * of this binding. The handler is invoked every time the packet is
      * sent to <strong>either</strong> side.
      *
      * @param handler The handler to add
      * @return This binding, for chaining
      */
-    MessageBinding<M> addHandler(MessageHandler<? super M> handler);
+    PacketBinding<M> addHandler(PacketHandler<? super M> handler);
 }

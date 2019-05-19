@@ -22,13 +22,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.message;
+package org.spongepowered.api.network;
 
 /**
- * Represents the request message within a request/response message pair.
- *
- * @param <R> The response message type
+ * Represents a {@link Exception} which can be thrown
+ * when dealing with network channels.
  */
-public interface RequestMessage<R extends ResponseMessage> extends Message {
+public class ChannelException extends Exception {
 
+    public ChannelException() {
+        super();
+    }
+
+    public ChannelException(String message) {
+        super(message);
+    }
+
+    public ChannelException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ChannelException(Throwable cause) {
+        super(cause);
+    }
 }

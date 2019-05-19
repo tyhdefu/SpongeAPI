@@ -42,28 +42,28 @@ import java.util.function.Consumer;
 public interface RawDataChannel extends ChannelBinding {
 
     /**
-     * Adds a listener to this channel that is invoked every time data is
+     * Adds a handler to this channel that is invoked every time data is
      * sent to it on <strong>either</strong> side.
      *
-     * @param listener The listener
+     * @param handler The handler
      */
-    void addListener(RawDataListener listener);
+    void addHandler(RawDataHandler handler);
 
     /**
      * Adds a listener to this channel that is invoked every time data is
      * sent to it on the given side.
      *
      * @param side The side to listen to data on
-     * @param listener The listener
+     * @param handler The handler
      */
-    void addListener(Platform.Type side, RawDataListener listener);
+    void addHandler(Platform.Type side, RawDataHandler handler);
 
     /**
-     * Removes the listener from handling data.
+     * Removes the handler from handling data.
      *
-     * @param listener The listener
+     * @param handler The handler
      */
-    void removeListener(RawDataListener listener);
+    void removeListener(RawDataHandler handler);
 
     /**
      * Sends the raw payload to the player across this channel. The data may

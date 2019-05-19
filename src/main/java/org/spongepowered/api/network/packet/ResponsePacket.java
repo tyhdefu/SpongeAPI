@@ -22,5 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-@org.spongepowered.api.util.annotation.NonnullByDefault
-package org.spongepowered.api.network.message;
+package org.spongepowered.api.network.packet;
+
+/**
+ * Represents the response packet within a request/response packet pair.
+ */
+public interface ResponsePacket extends Packet {
+
+}

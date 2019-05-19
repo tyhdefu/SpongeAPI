@@ -26,22 +26,22 @@ package org.spongepowered.api.network.raw;
 
 import org.spongepowered.api.Platform;
 import org.spongepowered.api.network.ChannelBuf;
-import org.spongepowered.api.network.ClientConnection;
+import org.spongepowered.api.network.RemoteConnection;
 
 /**
  * Represents a listener for data being sent to a raw channel.
  */
 @FunctionalInterface
-public interface RawDataListener {
+public interface RawDataHandler {
 
     /**
      * Handles the given {@link ChannelBuf} data sent by a remote connection.
      *
      * @param data The raw data
-     * @param connection The client connection
+     * @param connection The remote connection
      * @param side The side the data was received on (
      *        {@link org.spongepowered.api.Platform.Type#CLIENT}
      *        or {@link org.spongepowered.api.Platform.Type#SERVER})
      */
-    void handlePayload(ChannelBuf data, ClientConnection connection, Platform.Type side);
+    void handlePayload(ChannelBuf data, RemoteConnection connection, Platform.Type side);
 }
