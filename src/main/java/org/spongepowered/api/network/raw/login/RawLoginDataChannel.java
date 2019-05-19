@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 
 /**
  * Represents a raw login data channel. This channel can only send
- * messages to a {@link ClientConnection} during its login phase.
+ * raw data to a {@link ClientConnection} during its login phase.
  */
 public interface RawLoginDataChannel extends ChannelBinding {
 

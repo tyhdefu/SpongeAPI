@@ -93,7 +93,7 @@ public interface PacketChannel extends ChannelBinding {
      * Sends the packet to the player using this channel. The packet may
      * not be sent if the player doesn't have a registered handler.
      *
-     * @param player The player to send the message to
+     * @param player The player to send the packet to
      * @param packet The packet to send
      */
     default void sendTo(Player player, Packet packet) {
@@ -106,7 +106,7 @@ public interface PacketChannel extends ChannelBinding {
      * <p>A exception will be thrown if the specified packet type
      * isn't registered in this {@link PacketChannel}.</p>
      *
-     * @param connection The player connection to send the message to
+     * @param connection The player connection to send the packet to
      * @param packet The packet to send
      */
     void sendTo(ClientConnection connection, Packet packet);
@@ -122,10 +122,10 @@ public interface PacketChannel extends ChannelBinding {
      * <p>A exception will be thrown if the specified packet type
      * isn't registered in this {@link PacketChannel}.</p>
      *
-     * @param player The player to send the message to
+     * @param player The player to send the packet to
      * @param packet The request packet to send
      * @return The completable future to handle the response packet and exceptions
-     * @throws IllegalArgumentException If the given message type isn't registered in this channel binding
+     * @throws IllegalArgumentException If the given packet type isn't registered in this channel binding
      */
     default <R extends ResponsePacket> CompletableFuture<R> sendTo(Player player, RequestPacket<R> packet) {
         return sendTo(player.getConnection(), packet);
@@ -139,7 +139,7 @@ public interface PacketChannel extends ChannelBinding {
      * {@link NoResponseException} if there wasn't a valid response
      * received for the given request.</p>
      *
-     * <p>A exception will be thrown if the specified message type
+     * <p>A exception will be thrown if the specified packet type
      * isn't registered in this {@link PacketChannel}.</p>
      *
      * @param connection The player connection to send the packet to

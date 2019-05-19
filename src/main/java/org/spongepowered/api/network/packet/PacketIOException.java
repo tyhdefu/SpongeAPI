@@ -22,31 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.raw.login;
+package org.spongepowered.api.network.packet;
 
-import org.spongepowered.api.Platform;
-import org.spongepowered.api.network.ChannelBuf;
-import org.spongepowered.api.network.NoResponseException;
-import org.spongepowered.api.network.RemoteConnection;
+import org.spongepowered.api.network.ChannelException;
 
 /**
- * Handles a raw login data request.
+ * Represents a {@link Exception} which is thrown when a
+ * {@link Packet} fails to read or write.
  */
-@FunctionalInterface
-public interface RawLoginDataRequestHandler {
+public class PacketIOException extends ChannelException {
 
-    /**
-     * Handles the request data {@link ChannelBuf} for the given
-     * {@link RemoteConnection} and returns a response.
-     *
-     * <p>Throwing a {@link NoResponseException} will result in
-     * a {@link NoResponseException} on the other side of
-     * the connection.</p>
-     *
-     * @param request The request channel buf
-     * @param connection The connection that received the request data
-     * @param side The platform side this request is handled on
-     * @return The response data
-     */
-    ChannelBuf handleMessage(ChannelBuf request, RemoteConnection connection, Platform.Type side);
+    public PacketIOException() {
+        super();
+    }
+
+    public PacketIOException(String message) {
+        super(message);
+    }
+
+    public PacketIOException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public PacketIOException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -65,7 +65,7 @@ public interface TransactionalPacketBinding<P extends RequestPacket<R>, R extend
     PacketBinding<R> getResponseBinding();
 
     /**
-     * Adds a {@link RequestPacketHandler} to handle a {@link RequestPacket}
+     * Sets the {@link RequestPacketHandler} to handle a {@link RequestPacket}
      * on a specific platform side. The difference with a normal {@link PacketHandler}
      * is that it requires a {@link ResponsePacket} as return value.
      *
@@ -73,17 +73,17 @@ public interface TransactionalPacketBinding<P extends RequestPacket<R>, R extend
      * @param requestHandler The handler of the request packet
      * @return This packet binding, for chaining
      */
-    TransactionalPacketBinding<P, R> addRequestHandler(Platform.Type requestHandleSide, RequestPacketHandler<P, R> requestHandler);
+    TransactionalPacketBinding<P, R> setRequestHandler(Platform.Type requestHandleSide, RequestPacketHandler<P, R> requestHandler);
 
     /**
-     * Adds a {@link RequestPacketHandler} to handle a {@link RequestPacket}
+     * Sets the {@link RequestPacketHandler} to handle a {@link RequestPacket}
      * on both platform sides. The difference with a normal {@link PacketHandler}
      * is that it requires a {@link ResponsePacket} as return value.
      *
      * @param requestHandler The handler of the request packet
      * @return This packet binding, for chaining
      */
-    TransactionalPacketBinding<P, R> addRequestHandler(RequestPacketHandler<P, R> requestHandler);
+    TransactionalPacketBinding<P, R> setRequestHandler(RequestPacketHandler<P, R> requestHandler);
 
     /**
      * Adds a {@link PacketHandler} to handle a {@link ResponsePacket}

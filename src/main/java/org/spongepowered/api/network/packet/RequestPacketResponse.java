@@ -24,39 +24,32 @@
  */
 package org.spongepowered.api.network.packet;
 
-import org.spongepowered.api.Platform;
 import org.spongepowered.api.network.ChannelException;
-import org.spongepowered.api.network.RemoteConnection;
+import org.spongepowered.api.network.NoResponseException;
 
 /**
- * Represents a packet handler for {@link RequestPacket}s.
+ * Represents a callback for the response of a request packet.
  *
- * @param <P> The request packet type
  * @param <R> The response packet type
  */
-@FunctionalInterface
-public interface RequestPacketHandler<P extends RequestPacket<R>, R extends ResponsePacket> {
+public interface RequestPacketResponse<R extends ResponsePacket> {
 
     /**
-     * Handles the {@link RequestPacket} which was send by a specific
-     * {@link RemoteConnection}. A proper {@link ResponsePacket} should
-     * be answered with.
+     * Sets the response of the request packet as failed
+     * with the given {@link ChannelException}.
      *
-     * <p>Throwing a {@link ChannelException} during the execution of
-     * this handler will automatically be applied to the
-     * {@link RequestPacketResponse}.</p>
+     * <p>If this response fails, then will other side of the
+     * connection end up with a {@link NoResponseException}.</p>
      *
-     * <p>Every handled request should apply the proper response to
-     * {@link RequestPacketResponse}. Responding doesn't have to be
-     * instantly and can be from a concurrent context, but it shouldn't
-     * take minutes.
-     *
-     * @param requestPacket The received request packet
-     * @param connection The connection that sent the packet
-     * @param side The side the packet was received on (
-     *        {@link org.spongepowered.api.Platform.Type#CLIENT}
-     *        or {@link org.spongepowered.api.Platform.Type#SERVER})
+     * @param exception The exception
      */
-    void handleRequest(P requestPacket, RemoteConnection connection, Platform.Type side, RequestPacketResponse<R> response);
+    void fail(ChannelException exception);
 
+    /**
+     * Sets the response of the request packet as success
+     * with the given response packet.
+     *
+     * @param response The response packet
+     */
+    void success(R response);
 }
