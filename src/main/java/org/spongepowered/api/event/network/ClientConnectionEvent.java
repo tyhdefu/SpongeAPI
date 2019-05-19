@@ -24,11 +24,13 @@
  */
 package org.spongepowered.api.event.network;
 
+import com.flowpowered.math.vector.Vector3d;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.Event;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
+import org.spongepowered.api.event.impl.AbstractClientConnectionLoginEvent;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.message.MessageEvent;
 import org.spongepowered.api.network.ClientConnection;
@@ -40,7 +42,9 @@ import org.spongepowered.api.service.whitelist.WhitelistService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TextRepresentable;
 import org.spongepowered.api.util.Transform;
+import org.spongepowered.api.util.annotation.eventgen.ImplementedBy;
 import org.spongepowered.api.util.annotation.eventgen.PropertySettings;
+import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.net.InetAddress;
@@ -130,6 +134,7 @@ public interface ClientConnectionEvent extends Event {
      * Plugins may uncancel the event to allow a client to join, regardless of
      * its ban/whitelist status.</p>
      */
+    @ImplementedBy(AbstractClientConnectionLoginEvent.class)
     interface Login extends ClientConnectionEvent, MessageEvent, Event, Cancellable {
 
         /**
@@ -174,7 +179,23 @@ public interface ClientConnectionEvent extends Event {
          * @param world The world
          * @param transform The transform
          */
-        void setLoginPosition(World world, Transform transform);
+        void setLocation(World world, Transform transform);
+
+        /**
+         * Sets the {@link Location} the {@link User} will have
+         * at login.
+         *
+         * @param location The location
+         */
+        void setLocation(Location location);
+
+        /**
+         * Sets the rotation the {@link User} will have
+         * at login.
+         *
+         * @param rotation The rotation
+         */
+        void setRotation(Vector3d rotation);
     }
 
     /**

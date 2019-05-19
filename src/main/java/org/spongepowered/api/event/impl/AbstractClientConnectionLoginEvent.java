@@ -22,29 +22,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network.packet;
+package org.spongepowered.api.event.impl;
 
-import org.spongepowered.api.network.ChannelBuf;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * A packet transmitted over the connection of a client and a server.
- *
- * <p>Note to plugin implementations: This must have a no-args constructor.</p>
- */
-public interface Packet {
+import com.flowpowered.math.vector.Vector3d;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
+import org.spongepowered.api.util.Transform;
+import org.spongepowered.api.util.annotation.eventgen.UseField;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
-    /**
-     * Read the data from the channel buffer into this packet.
-     *
-     * @param buf The buffer to read from
-     */
-    void read(ChannelBuf buf);
+public abstract class AbstractClientConnectionLoginEvent extends AbstractEvent implements ClientConnectionEvent.Login {
 
-    /**
-     * Write the data from this packet to the channel buffer.
-     *
-     * @param buf The buffer to write to
-     */
-    void write(ChannelBuf buf);
+    @UseField private Transform toTransform;
+    @UseField private World toWorld;
 
+    @Override
+    public void setLocation(World world, Transform transform) {
+        this.toWorld = checkNotNull(world, "world");
+        this.toTransform = checkNotNull(transform, "transform");
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        checkNotNull(location, "location");
+        this.toWorld = location.getWorld();
+        this.toTransform = this.toTransform.withPosition(location.getPosition());
+    }
+
+    @Override
+    public void setRotation(Vector3d rotation) {
+        checkNotNull(rotation, "rotation");
+        this.toTransform = this.toTransform.withRotation(rotation);
+    }
 }

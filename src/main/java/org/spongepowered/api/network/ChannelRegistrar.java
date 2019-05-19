@@ -56,11 +56,10 @@ public interface ChannelRegistrar {
     Optional<ChannelBinding> getChannel(CatalogKey channelKey);
 
     /**
-     * Gets or creates a {@link PacketChannel} by the
-     * given name. If the channel exists and is a indexed message channel, then
-     * it is returned. If the channel is not an indexed message channel, then
-     * {@link IllegalStateException} is thrown. Otherwise, a new channel is
-     * created.
+     * Gets or creates a {@link PacketChannel} by the given channel key. If the
+     * channel exists and it matches the given channel type, it is returned. If
+     * the channel doesn't match a {@link IllegalStateException} is thrown.
+     * Otherwise, a new channel is created.
      *
      * @param channelKey The channel key
      * @return A new or existing indexed message channel binding
