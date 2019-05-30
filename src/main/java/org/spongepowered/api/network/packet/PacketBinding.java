@@ -24,15 +24,13 @@
  */
 package org.spongepowered.api.network.packet;
 
-import org.spongepowered.api.Platform;
-
 /**
  * Represents a binding of a {@link Packet} type
  * in a {@link PacketChannel}.
  *
- * @param <M> The packet type
+ * @param <P> The packet type
  */
-public interface PacketBinding<M extends Packet> {
+public interface PacketBinding<P extends Packet> {
 
     /**
      * Gets the opcode that is assigned to the packet.
@@ -46,26 +44,5 @@ public interface PacketBinding<M extends Packet> {
      *
      * @return The packet type
      */
-    Class<M> getPacketType();
-
-    /**
-     * Adds a {@link PacketHandler} a handler for receiving the packet
-     * of this binding. The handler is invoked every time the packet is sent to
-     * the given side.
-     *
-     * @param side The platform side the handler should be used on
-     * @param handler The handler to add
-     * @return This binding, for chaining
-     */
-    PacketBinding<M> addHandler(Platform.Type side, PacketHandler<? super M> handler);
-
-    /**
-     * Adds a {@link PacketHandler} a handler for receiving the packet
-     * of this binding. The handler is invoked every time the packet is
-     * sent to <strong>either</strong> side.
-     *
-     * @param handler The handler to add
-     * @return This binding, for chaining
-     */
-    PacketBinding<M> addHandler(PacketHandler<? super M> handler);
+    Class<P> getPacketType();
 }

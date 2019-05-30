@@ -62,9 +62,8 @@ public interface ChannelRegistrar {
      * Otherwise, a new channel is created.
      *
      * @param channelKey The channel key
-     * @return A new or existing indexed message channel binding
-     * @throws IllegalStateException if the existing channel is not an
-     *         IndexedMessageChannel
+     * @return A new or existing message channel binding
+     * @throws IllegalStateException if the existing channel is not of the given type
      * @throws ChannelRegistrationException for same reasons as
      *         {@link #createChannel}.
      */

@@ -22,34 +22,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.network;
+package org.spongepowered.api.network.packet;
 
-import org.spongepowered.api.profile.GameProfile;
-import org.spongepowered.api.text.Text;
+import org.spongepowered.api.Platform;
 
 /**
- * Represents a connection between a minecraft client and server.
+ * A packet binding that allows the registration of {@link PacketHandler}s.
+ *
+ * @param <P> The packet type
  */
-public interface ClientConnection extends RemoteConnection {
+public interface HandlerPacketBinding<P extends Packet> extends PacketBinding<P> {
 
     /**
-     * Gets the profile of the client.
+     * Adds a {@link PacketHandler} to handle the packets of type
+     * {@link P}. The handler is invoked every time the packet is
+     * sent to the given side.
      *
-     * @return The client's profile
+     * @param side The platform side the handler should be used on
+     * @param handler The handler to add
+     * @return This binding, for chaining
      */
-    GameProfile getProfile();
+    PacketBinding<P> addHandler(Platform.Type side, PacketHandler<? super P> handler);
 
     /**
-     * Disconnects the connection, showing the default disconnection reason.
-     * (the translation key {@code disconnect.disconnected})
-     */
-    void disconnect();
-
-    /**
-     * Disconnects the connection with the given reason.
+     * Adds a {@link PacketHandler} to handle the packets of type
+     * {@link P}. The handler is invoked every time the packet is
+     * sent to <strong>either</strong> side.
      *
-     * @param reason The reason for the disconnection
+     * @param handler The handler to add
+     * @return This binding, for chaining
      */
-    void disconnect(Text reason);
+    PacketBinding<P> addHandler(PacketHandler<? super P> handler);
+
+    /**
+     * Removes the {@link PacketHandler}.
+     *
+     * @param handler The handler to remove
+     * @return This binding, for chaining
+     */
+    PacketBinding<P> removeHandler(PacketHandler<? super P> handler);
 
 }

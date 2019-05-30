@@ -63,7 +63,7 @@ public interface RawDataChannel extends ChannelBinding {
      *
      * @param handler The handler
      */
-    void removeListener(RawDataHandler handler);
+    void removeHandler(RawDataHandler handler);
 
     /**
      * Sends the raw payload to the player across this channel. The data may

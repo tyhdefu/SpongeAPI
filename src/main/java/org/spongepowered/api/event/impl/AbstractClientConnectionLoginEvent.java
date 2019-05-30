@@ -26,7 +26,6 @@ package org.spongepowered.api.event.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.flowpowered.math.vector.Vector3d;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.util.Transform;
 import org.spongepowered.api.util.annotation.eventgen.UseField;
@@ -39,21 +38,15 @@ public abstract class AbstractClientConnectionLoginEvent extends AbstractEvent i
     @UseField private World toWorld;
 
     @Override
-    public void setLocation(World world, Transform transform) {
+    public void setToWorldTransform(World world, Transform transform) {
         this.toWorld = checkNotNull(world, "world");
         this.toTransform = checkNotNull(transform, "transform");
     }
 
     @Override
-    public void setLocation(Location location) {
+    public void setToLocation(Location location) {
         checkNotNull(location, "location");
         this.toWorld = location.getWorld();
         this.toTransform = this.toTransform.withPosition(location.getPosition());
-    }
-
-    @Override
-    public void setRotation(Vector3d rotation) {
-        checkNotNull(rotation, "rotation");
-        this.toTransform = this.toTransform.withRotation(rotation);
     }
 }

@@ -50,7 +50,7 @@ public interface PacketChannel extends ChannelBinding {
      * @param packetOpcode A unique opcode for this packet
      * @return The created packet binding
      */
-    <M extends Packet> PacketBinding<M> register(Class<M> packetClass, int packetOpcode);
+    <M extends Packet> HandlerPacketBinding<M> register(Class<M> packetClass, int packetOpcode);
 
     /**
      * Gets the {@link PacketBinding} for the given packet class, if the packet

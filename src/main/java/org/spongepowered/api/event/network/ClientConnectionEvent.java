@@ -179,7 +179,7 @@ public interface ClientConnectionEvent extends Event {
          * @param world The world
          * @param transform The transform
          */
-        void setLocation(World world, Transform transform);
+        void setToWorldTransform(World world, Transform transform);
 
         /**
          * Sets the {@link Location} the {@link User} will have
@@ -187,15 +187,15 @@ public interface ClientConnectionEvent extends Event {
          *
          * @param location The location
          */
-        void setLocation(Location location);
+        void setToLocation(Location location);
 
         /**
-         * Sets the rotation the {@link User} will have
+         * Sets the {@link Transform} the {@link User} will have
          * at login.
          *
-         * @param rotation The rotation
+         * @param transform The transform
          */
-        void setRotation(Vector3d rotation);
+        void setToTransform(Transform transform);
     }
 
     /**

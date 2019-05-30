@@ -27,7 +27,7 @@ package org.spongepowered.api.network;
 import org.spongepowered.api.entity.living.player.Player;
 
 /**
- * Represents an connection of a client to the server where
+ * Represents a connection of a client to the server where
  * the {@link Player} has successfully joined.
  */
 public interface PlayerConnection extends ClientConnection {
