@@ -31,4 +31,5 @@ import org.spongepowered.api.entity.projectile.DamagingProjectile;
  */
 public interface Fireball extends DamagingProjectile {
 
+
 }

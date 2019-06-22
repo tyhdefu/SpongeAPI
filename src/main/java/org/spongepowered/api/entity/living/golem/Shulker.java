@@ -45,7 +45,7 @@ public interface Shulker extends Golem, ProjectileSource {
      * @return A copy of the dye data
      */
     default DyeableData getDyeData() {
-        return get(DyeableData.class).get();
+        return this.get(DyeableData.class).get();
     }
 
     /**
@@ -55,7 +55,7 @@ public interface Shulker extends Golem, ProjectileSource {
      * @return The current value of dye color for this shulker
      */
     default Value<DyeColor> color() {
-        return getValue(Keys.DYE_COLOR).get();
+        return this.getValue(Keys.DYE_COLOR).get();
     }
 
     /**
@@ -64,8 +64,9 @@ public interface Shulker extends Golem, ProjectileSource {
      *
      * @return A copy of the directional data
      */
+    @Override
     default DirectionalData getDirectionalData() {
-        return get(DirectionalData.class).get();
+        return this.get(DirectionalData.class).get();
     }
 
     /**
@@ -73,8 +74,9 @@ public interface Shulker extends Golem, ProjectileSource {
      *
      * @return The current value of direction for this shulker
      */
+    @Override
     default Value<Direction> direction() {
-        return getValue(Keys.DIRECTION).get();
+        return this.getValue(Keys.DIRECTION).get();
     }
 
     /**

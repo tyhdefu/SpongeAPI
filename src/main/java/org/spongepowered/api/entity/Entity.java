@@ -32,10 +32,14 @@ import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataTransactionResult;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.TargetedLocationData;
+import org.spongepowered.api.data.manipulator.mutable.block.DirectionalData;
+import org.spongepowered.api.data.manipulator.mutable.entity.GravityData;
 import org.spongepowered.api.data.value.mutable.Value;
+import org.spongepowered.api.entity.living.golem.Shulker;
 import org.spongepowered.api.event.cause.entity.damage.source.DamageSource;
 import org.spongepowered.api.text.translation.Translatable;
 import org.spongepowered.api.util.AABB;
+import org.spongepowered.api.util.Direction;
 import org.spongepowered.api.util.Identifiable;
 import org.spongepowered.api.util.RelativePositions;
 import org.spongepowered.api.world.Locatable;
@@ -556,12 +560,39 @@ public interface Entity extends Identifiable, Locatable, DataHolder, Translatabl
     EntityArchetype createArchetype();
 
     /**
+     * Gets a copy of the {@link GravityData} representing if this entity has gravity.
+     *
+     * @return A copy of the gravity data
+     */
+    default GravityData getGravityData() {
+        return this.get(GravityData.class).get();
+    }
+
+    /**
      * Returns whether this entity has gravity.
      *
      * @return True if this entity has gravity
      */
     default Value<Boolean> gravity() {
-        return getValue(Keys.HAS_GRAVITY).get();
+        return this.getValue(Keys.HAS_GRAVITY).get();
     }
 
+    /**
+     * Gets a copy of the {@link DirectionalData} representing the direction this
+     * {@link Entity} is oriented towards.
+     *
+     * @return A copy of the directional data
+     */
+    default DirectionalData getDirectionalData() {
+        return this.get(DirectionalData.class).get();
+    }
+
+    /**
+     * Gets the current {@link Value} of {@link Direction} for this {@link Entity}.
+     *
+     * @return The current value of direction for this entity
+     */
+    default Value<Direction> direction() {
+        return this.getValue(Keys.DIRECTION).get();
+    }
 }
