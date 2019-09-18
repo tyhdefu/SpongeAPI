@@ -63,7 +63,7 @@ dependencies {
     compile 'com.flowpowered:flow-noise:1.0.1-SNAPSHOT'
 
     // Event generation
-    compile 'org.ow2.asm:asm:5.2'
+    compile 'org.ow2.asm:asm:6.2'
 }
 
 // JAR manifest configuration
