@@ -152,7 +152,7 @@ public interface BlockSnapshot extends LocatableSnapshot<BlockSnapshot> {
      */
     Optional<TileEntityArchetype> createArchetype();
 
-    interface Builder extends ImmutableDataBuilder<BlockSnapshot, Builder> {
+    interface Builder extends LocatableSnapshot.Builder<BlockSnapshot, Builder>, ImmutableDataBuilder<BlockSnapshot, Builder> {
 
         /**
          * Sets the {@link WorldProperties} for this {@link BlockSnapshot}.
@@ -164,6 +164,7 @@ public interface BlockSnapshot extends LocatableSnapshot<BlockSnapshot> {
          * @param worldProperties The WorldProperties
          * @return This builder, for chaining
          */
+        @Override
         Builder world(WorldProperties worldProperties);
 
         /**
@@ -197,6 +198,7 @@ public interface BlockSnapshot extends LocatableSnapshot<BlockSnapshot> {
          * @param uuid The {@link UUID} of the creator
          * @return This builder, for chaining
          */
+        @Override
         Builder creator(UUID uuid);
 
         /**
@@ -206,6 +208,7 @@ public interface BlockSnapshot extends LocatableSnapshot<BlockSnapshot> {
          * @param uuid The {@link UUID} of the notifier
          * @return This builder, for chaining
          */
+        @Override
         Builder notifier(UUID uuid);
     }
 }

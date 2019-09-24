@@ -24,9 +24,14 @@
  */
 package org.spongepowered.api.data;
 
+import com.flowpowered.math.vector.Vector3d;
 import com.flowpowered.math.vector.Vector3i;
+import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.data.persistence.DataBuilder;
+import org.spongepowered.api.entity.EntitySnapshot;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -74,4 +79,37 @@ public interface LocatableSnapshot<T extends LocatableSnapshot<T>> extends Immut
      * @return The new snapshot
      */
     T withLocation(Location<World> location);
+
+    interface Builder<T extends LocatableSnapshot<T>, B extends Builder<T, B>> extends ImmutableDataBuilder<T, B> {
+
+        /**
+         * Sets the {@link WorldProperties} for this {@link EntitySnapshot}.
+         *
+         * <p>This is used to grab the {@link UUID} of the World for this
+         * snapshot.</p>
+         *
+         * @param worldProperties The WorldProperties
+         * @return This builder, for chaining
+         */
+        B world(WorldProperties worldProperties);
+
+
+        /**
+         * Sets the {@link UUID} of the user who created this
+         * {@link BlockSnapshot}.
+         *
+         * @param uuid The {@link UUID} of the creator
+         * @return This builder, for chaining
+         */
+        B creator(UUID uuid);
+
+        /**
+         * Sets the {@link UUID} of the user who last notified this
+         * {@link BlockSnapshot}.
+         *
+         * @param uuid The {@link UUID} of the notifier
+         * @return This builder, for chaining
+         */
+        B notifier(UUID uuid);
+    }
 }

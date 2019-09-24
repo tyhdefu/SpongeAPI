@@ -111,7 +111,7 @@ public interface EntitySnapshot extends LocatableSnapshot<EntitySnapshot> {
      * An {@link ImmutableDataBuilder} for building {@link EntitySnapshot}s. The
      * requirements
      */
-    interface Builder extends ImmutableDataBuilder<EntitySnapshot, Builder> {
+    interface Builder extends LocatableSnapshot.Builder<EntitySnapshot, Builder>, ImmutableDataBuilder<EntitySnapshot, Builder> {
 
         /**
          * Sets the {@link WorldProperties} for this {@link EntitySnapshot}.
@@ -122,6 +122,7 @@ public interface EntitySnapshot extends LocatableSnapshot<EntitySnapshot> {
          * @param worldProperties The WorldProperties
          * @return This builder, for chaining
          */
+        @Override
         Builder world(WorldProperties worldProperties);
 
         /**
@@ -149,6 +150,15 @@ public interface EntitySnapshot extends LocatableSnapshot<EntitySnapshot> {
          */
         Builder from(Entity entity);
 
+        @Override
+        default Builder creator(UUID uuid) {
+            return this;
+        }
+
+        @Override
+        default Builder notifier(UUID uuid) {
+            return this;
+        }
     }
 
 }
