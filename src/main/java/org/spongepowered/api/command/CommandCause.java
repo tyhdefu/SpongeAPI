@@ -33,6 +33,7 @@ import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.permission.Subject;
+import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.channel.MessageReceiver;
 import org.spongepowered.api.world.Locatable;
 import org.spongepowered.api.world.Location;
@@ -68,7 +69,7 @@ import java.util.Optional;
  * be handled, in addition to using the provided cause stack:</p>
  *
  * <ul>
- *     <li>{@link EventContextKeys#MESSAGE_TARGET}, which indicates the
+ *     <li>{@link EventContextKeys#MESSAGE_CHANNEL}, which indicates the
  *     where messages that should be sent back to the invoker should be sent
  *     to (typically messages indicating the status of the command execution);
  *     </li>
@@ -141,14 +142,14 @@ public interface CommandCause {
     }
 
     /**
-     * Gets the {@link MessageReceiver} that should be the target for any
+     * Gets the {@link MessageChannel} that should be the target for any
      * messages sent by the command (by default).
      *
-     * <p>The {@link MessageReceiver} will be selected in the following way
+     * <p>The {@link MessageChannel} will be selected in the following way
      * from the {@link Cause} in {@link #getCause()}:</p>
      *
      * <ul>
-     *    <li>The {@link EventContextKeys#MESSAGE_TARGET}, if any</li>
+     *    <li>The {@link EventContextKeys#MESSAGE_CHANNEL}, if any</li>
      *    <li>A message channel containing the <strong>first</strong>
      *    {@link MessageReceiver} in the {@link Cause}</li>
      *    <li>The SystemSubject {@link MessageReceiver}</li>
@@ -161,10 +162,10 @@ public interface CommandCause {
      *
      * @return The {@link MessageReceiver} to send any messages to.
      */
-    default MessageReceiver getMessageReceiver() {
+    default MessageChannel getMessageChannel() {
         return getCause().getContext()
-                .get(EventContextKeys.MESSAGE_TARGET)
-                .orElseGet(() -> getCause().first(MessageReceiver.class).orElseGet(Sponge::getSystemSubject));
+                .get(EventContextKeys.MESSAGE_CHANNEL)
+                .orElseGet(() -> MessageChannel.to(getCause().first(MessageReceiver.class).orElseGet(Sponge::getSystemSubject)));
     }
 
     /**
@@ -175,8 +176,6 @@ public interface CommandCause {
      * <ul>
      *     <li>The {@link EventContextKeys#LOCATION}, if any</li>
      *     <li>{@link #getTargetBlock()}</li>
-     *     <li>The {@link EventContextKeys#MESSAGE_TARGET}, if it is
-     *     {@link Locatable}</li>
      *     <li>the location of the first locatable in the {@link Cause}</li>
      * </ul>
      *
@@ -194,11 +193,7 @@ public interface CommandCause {
             return optionalLocation;
         }
 
-        return Optional.ofNullable(
-                eventContext.get(EventContextKeys.MESSAGE_TARGET)
-                       .filter(x -> x instanceof Locatable)
-                        .map(x -> ((Locatable) x).getLocation())
-                        .orElseGet(() -> cause.first(Locatable.class).map(Locatable::getLocation).orElse(null)));
+        return cause.first(Locatable.class).map(Locatable::getLocation);
     }
 
     /**
@@ -208,8 +203,6 @@ public interface CommandCause {
      *
      * <ul>
      *     <li>The {@link EventContextKeys#ROTATION}, if any</li>
-     *     <li>The {@link EventContextKeys#MESSAGE_TARGET}, if it has a
-     *     rotation</li>
      *     <li>the rotation of the first {@link Entity} in the {@link Cause}</li>
      * </ul>
      *
@@ -222,11 +215,7 @@ public interface CommandCause {
             return eventContext.get(EventContextKeys.ROTATION);
         }
 
-        return Optional.ofNullable(
-                eventContext.get(EventContextKeys.MESSAGE_TARGET)
-                        .filter(x -> x instanceof Entity)
-                        .map(x -> ((Entity) x).getRotation())
-                        .orElseGet(() -> cause.first(Entity.class).map(Entity::getRotation).orElse(null)));
+        return cause.first(Entity.class).map(Entity::getRotation);
     }
 
     /**

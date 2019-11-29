@@ -27,6 +27,7 @@ package org.spongepowered.api.command.manager;
 import org.spongepowered.api.command.Command;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.exception.CommandException;
+import org.spongepowered.api.command.registrar.CommandRegistrar;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.channel.MessageChannel;
@@ -112,7 +113,42 @@ public interface CommandManager {
     List<String> suggest(Subject subject, MessageChannel receiver, String arguments);
 
     /**
-     * Registers a {@link Command} with the {@link CommandManager}.
+     * Registers a {@link Command} with the Sponge {@link CommandRegistrar}.
+     * This method should only be used by plugins that implement their own
+     * command framework, as described in the description of the
+     * {@link CommandRegistrar} class.
+     *
+     * <p>When registering a command, any aliases provided are prefixed with
+     * {@link PluginContainer#getId()} followed by a colon to provide command
+     * namespacing in addition to the unnamespaced aliases. As an example,
+     * if a plugin with ID {@code foo} tries to register the command
+     * {@code bar}, the command manager will attempt to register the commands
+     * {@code /bar} and {@code /foo:bar}.</p>
+     *
+     * <p>Command aliases may not contain whitespace.</p>
+     *
+     * <p>If you wish to inspect the aliases that were registered, you may
+     * inspect the returned {@link CommandMapping} for the registered aliases.
+     * </p>
+     *
+     * @param registrar The {@link CommandRegistrar} that is requesting the
+     *                  aliases
+     * @param container The {@link PluginContainer} to register the command for
+     * @param primaryAlias The first command alias to register
+     * @param secondaryAliases Secondary aliases to register, if any
+     * @return The {@link CommandMapping} containing the command mapping
+     *         information.
+     * @throws FailedRegistrationException thrown if the command could not be
+     *                                     registered.
+     */
+    CommandMapping registerAlias(CommandRegistrar registrar,
+            PluginContainer container,
+            String primaryAlias,
+            String... secondaryAliases)
+            throws FailedRegistrationException;
+
+    /**
+     * Registers a {@link Command} with the Sponge {@link CommandRegistrar}.
      *
      * <p>When registering a command, any aliases provided are prefixed with
      * {@link PluginContainer#getId()} followed by a colon to provide command
@@ -141,10 +177,18 @@ public interface CommandManager {
 
     /**
      * Unregisters a command based on the alias and provided
-     * {@link PluginContainer}
+     * {@link PluginContainer}.
      *
-     * @param mapping The {@link CommandMapping} that represents the command to remove.
-     * @return A {@link CommandMapping} representing what was unregistered, if anything.
+     * <p>Any unregistered aliases will be reported back to the
+     * {@link CommandRegistrar} that registered the alias.</p>
+     *
+     * <p>The manager may reject a request to unregister a mapping. If this is
+     * the case an empty {@link Optional} will be returned.</p>
+     *
+     * @param mapping The {@link CommandMapping} that represents the command to
+     *                remove.
+     * @return A {@link CommandMapping} representing what was unregistered, if
+     *         anything.
      */
     Optional<CommandMapping> unregister(CommandMapping mapping);
 
@@ -168,4 +212,14 @@ public interface CommandManager {
      */
     Collection<PluginContainer> getPlugins();
 
+    /**
+     * Returns whether the given mapping is registered.
+     *
+     * <p>This will generally be used when a {@link CommandRegistrar} is
+     * notified of a command unregistration.</p>
+     *
+     * @param mapping The mapping to check.
+     * @return {@code true} if so.
+     */
+    boolean isRegistered(CommandMapping mapping);
 }

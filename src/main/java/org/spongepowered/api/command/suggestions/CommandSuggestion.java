@@ -22,24 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.command.parameter.managed;
-
-import org.spongepowered.api.command.parameter.CommandContext;
-
-import java.util.List;
+package org.spongepowered.api.command.suggestions;
 
 /**
- * Defines the completions for a parameter.
+ * Represents a parameter value suggesting when completing commands
  */
-@FunctionalInterface
-public interface ValueCompleter {
+public interface CommandSuggestion {
 
-    /**
-     * Gets valid completions for this element.
-     *
-     * @param context The {@link CommandContext} that contains the parsed arguments
-     * @return The list of values
-     */
-    List<String> complete(CommandContext context);
+    int startIndex();
+
+    int endIndex();
+
+    String suggestion();
+
+    String tooltip();
 
 }

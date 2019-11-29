@@ -98,12 +98,10 @@ public interface Command {
      *
      * @param cause The {@link CommandCause} of the command
      * @param arguments The arguments entered up to this point
-     * @param targetPosition The position the source is looking at when
-     *     performing tab completion
      * @return A list of suggestions
      * @throws CommandException Thrown if there was a parsing error
      */
-    List<String> getSuggestions(CommandCause cause, String arguments, @Nullable Location targetPosition) throws CommandException;
+    List<String> getSuggestions(CommandCause cause, String arguments) throws CommandException;
 
     /**
      * Test whether this command can probably be executed given this

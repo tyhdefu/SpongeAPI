@@ -24,6 +24,7 @@
  */
 package org.spongepowered.api.command.parameter;
 
+import com.google.common.reflect.TypeToken;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.Sponge;
@@ -98,12 +99,12 @@ public interface Parameter {
      * Creates a {@link Parameter.Key} for storing values against.
      *
      * @param key The string key
-     * @param valueClass The type of value that this key represents
+     * @param typeToken The type of value that this key represents
      * @param <T> The type
      * @return The {@link Key}
      */
-    static <T> Key<T> key(String key, Class<T> valueClass) {
-        return Sponge.getRegistry().getBuilderRegistry().provideBuilder(Key.Builder.class).build(key, valueClass);
+    static <T> Key<T> key(String key, TypeToken<T> typeToken) {
+        return Sponge.getRegistry().getBuilderRegistry().provideBuilder(Key.Builder.class).build(key, typeToken);
     }
 
     /**
@@ -771,12 +772,12 @@ public interface Parameter {
         String key();
 
         /**
-         * Gets the {@link Class} of the type of object that this parameter
+         * Gets the {@link TypeToken} of the type of object that this parameter
          * should return from parsing.
          *
-         * @return The {@link Class}
+         * @return The {@link TypeToken}
          */
-        Class<T> getValueClass();
+        TypeToken<T> getTypeToken();
 
         /**
          * A "builder" that allows for keys to be built.
@@ -788,12 +789,12 @@ public interface Parameter {
              * represents.
              *
              * @param key The key
-             * @param valueClass The {@link Class} that represents the
+             * @param typeToken The {@link TypeToken} that represents the
              *                   type of value it stores
              * @param <T> The type of the value represented by the key
              * @return The built {@link Key}
              */
-            <T> Key<T> build(String key, Class<T> valueClass);
+            <T> Key<T> build(String key, TypeToken<T> typeToken);
         }
 
     }

@@ -22,24 +22,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.command.parameter.managed;
+package org.spongepowered.api.command.registrar;
 
-import org.spongepowered.api.command.parameter.CommandContext;
-
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * Defines the completions for a parameter.
+ * Builds a tree of command parameters for sending to clients.
+ *
+ * // TODO: this in a sane way
  */
-@FunctionalInterface
-public interface ValueCompleter {
-
-    /**
-     * Gets valid completions for this element.
-     *
-     * @param context The {@link CommandContext} that contains the parsed arguments
-     * @return The list of values
-     */
-    List<String> complete(CommandContext context);
+public interface CommandTreeBuilder {
 
 }
