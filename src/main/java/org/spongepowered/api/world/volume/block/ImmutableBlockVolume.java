@@ -32,4 +32,14 @@ public interface ImmutableBlockVolume extends UnmodifiableBlockVolume<ImmutableB
     default ImmutableBlockVolume asImmutableBlockVolume() {
         return this;
     }
+
+    @Override
+    default ImmutableBlockVolume asUnmodifiableBlockVolume() {
+        return this;
+    }
+
+    @Override
+    default ImmutableBlockVolume asUnmodifiableVolume() {
+        return this;
+    }
 }

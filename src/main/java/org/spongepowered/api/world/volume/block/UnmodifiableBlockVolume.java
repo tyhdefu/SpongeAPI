@@ -26,7 +26,8 @@ package org.spongepowered.api.world.volume.block;
 
 import org.spongepowered.api.world.volume.MutableVolume;
 import org.spongepowered.api.world.volume.UnmodifiableVolume;
-import org.spongepowered.api.world.volume.block.worker.BlockVolumeStream;
+import org.spongepowered.api.world.volume.block.stream.BlockVolumeStream;
+import org.spongepowered.math.vector.Vector3i;
 
 /**
  * Like a {@link ReadableBlockVolume} except in the case that
@@ -39,6 +40,15 @@ public interface UnmodifiableBlockVolume<U extends UnmodifiableBlockVolume<U>> e
     @SuppressWarnings("unchecked")
     @Override
     default U asUnmodifiableBlockVolume() {
+        return (U) this;
+    }
+
+    @Override
+    U getView(Vector3i newMin, Vector3i newMax);
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default U asUnmodifiableVolume() {
         return (U) this;
     }
 }

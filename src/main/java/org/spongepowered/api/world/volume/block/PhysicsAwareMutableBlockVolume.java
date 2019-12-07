@@ -42,6 +42,12 @@ public interface PhysicsAwareMutableBlockVolume<P extends PhysicsAwareMutableBlo
         return setBlock(x, y, z, block, BlockChangeFlags.ALL);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    default P asMutableVolume() {
+        return (P) this;
+    }
+
     /**
      * Sets the block at the given position in the world.
      *

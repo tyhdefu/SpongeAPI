@@ -27,6 +27,8 @@ package org.spongepowered.api.world.volume.block;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.fluid.FluidState;
 import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.volume.MutableVolume;
+import org.spongepowered.api.world.volume.UnmodifiableVolume;
 import org.spongepowered.api.world.volume.Volume;
 import org.spongepowered.math.vector.Vector2i;
 import org.spongepowered.math.vector.Vector3i;
@@ -48,6 +50,12 @@ public interface ReadableBlockVolume extends Volume {
     UnmodifiableBlockVolume<?> asUnmodifiableBlockVolume();
 
     ImmutableBlockVolume asImmutableBlockVolume();
+
+    @Override
+    UnmodifiableBlockVolume<?> asUnmodifiableVolume();
+
+    @Override
+    MutableBlockVolume<?> asMutableVolume();
 
     /**
      * Get the y value of the highest block that sunlight can reach in the given

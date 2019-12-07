@@ -24,7 +24,7 @@
  */
 package org.spongepowered.api.world.volume.block;
 
-import org.spongepowered.api.world.volume.block.worker.BlockVolumeStream;
+import org.spongepowered.api.world.volume.block.stream.BlockVolumeStream;
 
 public interface StreamableBlockVolume<B extends StreamableBlockVolume<B>> extends ReadableBlockVolume {
 
@@ -33,5 +33,5 @@ public interface StreamableBlockVolume<B extends StreamableBlockVolume<B>> exten
      *
      * @return The block worker
      */
-    BlockVolumeStream<B, ?> toBlockStream();
+    BlockVolumeStream<B> toBlockStream();
 }

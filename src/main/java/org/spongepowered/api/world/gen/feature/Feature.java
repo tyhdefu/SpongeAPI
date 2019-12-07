@@ -29,7 +29,7 @@ import org.spongepowered.api.util.annotation.CatalogedBy;
 import org.spongepowered.api.world.ProtoWorld;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.gen.FeatureConfig;
-import org.spongepowered.api.world.gen.GenerationRegion;
+import org.spongepowered.api.world.gen.GeneratingWorldVolume;
 import org.spongepowered.api.world.gen.TerrainGenerator;
 import org.spongepowered.math.vector.Vector3i;
 
@@ -41,7 +41,7 @@ public interface Feature<C extends FeatureConfig> extends CatalogType {
     /**
      * Generates the feature centered at the origin position in the
      * provided {@link ProtoWorld}. The world is not guaranteed to be an
-     * active {@link World}, as it can be a {@link GenerationRegion}
+     * active {@link World}, as it can be a {@link GeneratingWorldVolume}
      * (for chunk generation). The configuration object is used to determine
      * various feature options. Not every Feature will have options.
      *

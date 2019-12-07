@@ -31,4 +31,8 @@ public interface UnmodifiableVolume extends Volume {
     @Override
     UnmodifiableVolume getView(Vector3i newMin, Vector3i newMax);
 
+    @Override
+    default UnmodifiableVolume asUnmodifiableVolume() {
+        return this;
+    }
 }

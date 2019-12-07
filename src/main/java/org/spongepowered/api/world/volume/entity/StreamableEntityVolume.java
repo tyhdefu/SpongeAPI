@@ -24,13 +24,10 @@
  */
 package org.spongepowered.api.world.volume.entity;
 
-import org.spongepowered.api.world.volume.entity.worker.EntityStream;
-import org.spongepowered.math.vector.Vector3i;
+import org.spongepowered.api.world.volume.entity.stream.EntityStream;
 
 public interface StreamableEntityVolume<E extends StreamableEntityVolume<E>> extends ReadableEntityVolume {
 
-    EntityStream<E, ?> toEntityStream();
+    EntityStream<E> toEntityStream();
 
-    @Override
-    E getView(Vector3i newMin, Vector3i newMax);
 }

@@ -31,4 +31,9 @@ public interface MutableVolume extends Volume {
     @Override
     MutableVolume getView(Vector3i newMin, Vector3i newMax);
 
+    @Override
+    default MutableVolume asMutableVolume() {
+        return this;
+    }
+
 }

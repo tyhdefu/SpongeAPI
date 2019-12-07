@@ -55,18 +55,24 @@ import org.spongepowered.math.vector.Vector3i;
  *
  * @param <P> The type of world to reflect back on
  */
-public interface BoundedWorldView<P extends ProtoWorld<P>> extends
-        ReadableRegion<BoundedWorldView<P>>,
-        MutableBiomeVolume<BoundedWorldView<P>>, // Because this is mutable
-        MutableBlockVolume<BoundedWorldView<P>>, // Because this is mutable
-        MutableEntityVolume<BoundedWorldView<P>>, // Because this is mutable
-        StreamableBlockEntityVolume<BoundedWorldView<P>>, // Because this is mutable
+public interface BoundedWorldView<B extends BoundedWorldView<B, P>, P extends ProtoWorld<P>> extends
+        ReadableRegion<B>,
+        MutableBiomeVolume<B>, // Because this is mutable
+        MutableBlockVolume<B>, // Because this is mutable
+        MutableEntityVolume<B>, // Because this is mutable
+        StreamableBlockEntityVolume<B>, // Because this is mutable
         GenerationVolume,
         LocationBasePropertyHolder,
         LocationCompositeValueStore,
         RandomProvider,
-        PhysicsAwareMutableBlockVolume<BoundedWorldView<P>>,
+        PhysicsAwareMutableBlockVolume<B>,
         MutableGameVolume {
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default B asMutableVolume() {
+        return (B) this;
+    }
 
     @Override
     default boolean setBlock(Vector3i position, BlockState state, BlockChangeFlag flag) {
@@ -82,5 +88,8 @@ public interface BoundedWorldView<P extends ProtoWorld<P>> extends
     boolean removeBlock(int x, int y, int z);
 
     P getWorld();
+
+    @Override
+    B getView(Vector3i newMin, Vector3i newMax);
 
 }

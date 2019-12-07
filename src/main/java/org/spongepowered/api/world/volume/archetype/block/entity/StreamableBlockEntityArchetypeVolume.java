@@ -25,7 +25,7 @@
 package org.spongepowered.api.world.volume.archetype.block.entity;
 
 
-import org.spongepowered.api.world.volume.archetype.block.entity.worker.BlockEntityArchetypeStream;
+import org.spongepowered.api.world.volume.archetype.block.entity.stream.BlockEntityArchetypeStream;
 
 public interface StreamableBlockEntityArchetypeVolume<B extends StreamableBlockEntityArchetypeVolume<B>> extends ReadableBlockEntityArchetypeVolume {
 

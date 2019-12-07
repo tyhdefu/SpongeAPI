@@ -26,4 +26,9 @@ package org.spongepowered.api.world.volume;
 
 public interface ImmutableVolume extends UnmodifiableVolume {
 
+    @Override
+    default ImmutableVolume asUnmodifiableVolume() {
+        return this;
+    }
+
 }

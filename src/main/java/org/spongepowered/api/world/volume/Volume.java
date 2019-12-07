@@ -77,4 +77,9 @@ public interface Volume {
      *         outside the current volume
      */
     Volume getView(Vector3i newMin, Vector3i newMax);
+
+    UnmodifiableVolume asUnmodifiableVolume();
+
+    MutableVolume asMutableVolume();
+
 }

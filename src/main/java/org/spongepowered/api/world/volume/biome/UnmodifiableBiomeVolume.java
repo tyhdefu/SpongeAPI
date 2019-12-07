@@ -27,7 +27,7 @@ package org.spongepowered.api.world.volume.biome;
 import org.spongepowered.api.world.volume.MutableVolume;
 import org.spongepowered.api.world.volume.UnmodifiableVolume;
 import org.spongepowered.api.world.volume.block.ReadableBlockVolume;
-import org.spongepowered.api.world.volume.block.worker.BlockVolumeStream;
+import org.spongepowered.api.world.volume.block.stream.BlockVolumeStream;
 
 /**
  * Like a {@link ReadableBlockVolume} except in the case that

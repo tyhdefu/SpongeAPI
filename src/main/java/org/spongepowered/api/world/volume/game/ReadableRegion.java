@@ -31,6 +31,8 @@ import org.spongepowered.api.util.AABB;
 import org.spongepowered.api.util.RandomProvider;
 import org.spongepowered.api.world.dimension.Dimension;
 import org.spongepowered.api.world.WorldBorder;
+import org.spongepowered.api.world.gen.GenerationRegion;
+import org.spongepowered.api.world.UnmodifiableWorldView;
 import org.spongepowered.api.world.volume.biome.StreamableBiomeVolume;
 import org.spongepowered.api.world.volume.block.StreamableBlockVolume;
 import org.spongepowered.api.world.volume.block.entity.StreamableBlockEntityVolume;
@@ -131,4 +133,6 @@ public interface ReadableRegion<R extends ReadableRegion<R>> extends
 
     boolean isAreaLoaded(int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, boolean allowEmpty);
 
+    @Override
+    R getView(Vector3i newMin, Vector3i newMax);
 }

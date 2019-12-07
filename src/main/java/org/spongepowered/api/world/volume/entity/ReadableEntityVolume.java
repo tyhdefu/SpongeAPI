@@ -35,6 +35,8 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.AABB;
 import org.spongepowered.api.world.volume.EntityHit;
 import org.spongepowered.api.world.volume.Volume;
+import org.spongepowered.api.world.volume.archetype.entity.ImmutableEntityArchetypeVolume;
+import org.spongepowered.api.world.volume.archetype.entity.UnmodifiableEntityArchetypeVolume;
 import org.spongepowered.api.world.volume.block.ReadableBlockVolume;
 import org.spongepowered.math.imaginary.Quaterniond;
 import org.spongepowered.math.vector.Vector3d;
@@ -55,9 +57,9 @@ public interface ReadableEntityVolume extends Volume {
     @Override
     ReadableEntityVolume getView(Vector3i newMin, Vector3i newMax);
 
-    UnmodifiableEntityVolume<?> asUnmodifiableEntityVolume();
+    UnmodifiableEntityArchetypeVolume<?> asUnmodifiableEntityVolume();
 
-    ImmutableEntityVolume asImmutableEntityVolume();
+    ImmutableEntityArchetypeVolume asImmutableEntityVolume();
 
     /**
      * Gets the entity whose {@link UUID} matches the provided id, possibly
