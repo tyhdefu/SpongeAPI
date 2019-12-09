@@ -38,6 +38,8 @@ public interface VolumeReducer<V extends Volume, T, M extends MutableVolume, M2 
 
     Supplier<M2> getAccumilator();
 
+    UnmodifiableVolumeViewer<? super V, ? extends U> getVolumeView();
+
     VolumeMerger<T, ? super U> GetReducer();
 
     VolumeFiller<? extends M, ? extends T> getFinisher();
@@ -50,9 +52,10 @@ public interface VolumeReducer<V extends Volume, T, M extends MutableVolume, M2 
     VolumeReducer<NV, NT, NM, NM2, NU> of(final Supplier<NV> second,
                                           final Supplier<NU> reference,
                                           final Supplier<NM2> accumilator,
+                                          final UnmodifiableVolumeViewer<? super NV, ? extends NU> viewer,
                                           final VolumeMerger<NT, ? super NU> reducer,
                                           final VolumeFiller<? extends NM, ? extends NT> finisher) {
-        return new Impl<>(second, reference, accumilator, reducer, finisher);
+        return new Impl<>(second, reference, accumilator, viewer, reducer, finisher);
     }
 
     static class Impl<V extends Volume, T, M extends MutableVolume, M2 extends M, U extends UnmodifiableVolume>
@@ -60,13 +63,15 @@ public interface VolumeReducer<V extends Volume, T, M extends MutableVolume, M2 
         private final Supplier<V> second;
         private final Supplier<U> reference;
         private final Supplier<M2> accumilator;
+        private final UnmodifiableVolumeViewer<? super V, ? extends U> viewer;
         private final VolumeMerger<T, ? super U> reducer;
         private final VolumeFiller<? extends M, ? extends T> finisher;
 
-        public Impl(Supplier<V> second, Supplier<U> reference, Supplier<M2> accumilator, VolumeMerger<T, ? super U> reducer, VolumeFiller<? extends M, ? extends T> finisher) {
+        public Impl(Supplier<V> second, Supplier<U> reference, Supplier<M2> accumilator, UnmodifiableVolumeViewer<? super V, ? extends U> viewer, VolumeMerger<T, ? super U> reducer, VolumeFiller<? extends M, ? extends T> finisher) {
             this.second = second;
             this.reference = reference;
             this.accumilator = accumilator;
+            this.viewer = viewer;
             this.reducer = reducer;
             this.finisher = finisher;
         }
@@ -84,6 +89,11 @@ public interface VolumeReducer<V extends Volume, T, M extends MutableVolume, M2 
         @Override
         public Supplier<M2> getAccumilator() {
             return this.accumilator;
+        }
+
+        @Override
+        public UnmodifiableVolumeViewer<? super V, ? extends U> getVolumeView() {
+            return this.viewer;
         }
 
         @Override

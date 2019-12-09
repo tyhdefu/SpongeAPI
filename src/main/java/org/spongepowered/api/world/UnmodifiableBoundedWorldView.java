@@ -47,13 +47,15 @@ public interface UnmodifiableBoundedWorldView extends
             return left.getBlock(xLeft, yLeft, zLeft).getType();
         };
         final VolumeMerger<BlockState, UnmodifiableBlockVolume<?>> merger = (left, xLeft, yLeft, zLeft, right, xRight, yRight, zRight) -> BlockTypes.AIR.getDefaultState();
+        final VolumeReducer<UnmodifiableBoundedWorldView, BlockState, MutableBlockVolume<?>, GeneratingWorldVolume, UnmodifiableBoundedWorldView> reducer =
+                VolumeReducer.of(() -> this, () -> this.asUnmodifiableBlockVolume(), VolumeMerger.leftBlocks(), region, VolumeFiller.BLOCK_APPLIER);
         stream
                 .filter((volume, element, x, y, z) -> element.getType().doesUpdateRandomly())
-                .merge(VolumeReducer.of(() -> this, VolumeMerger.leftBlocks(), region, VolumeFiller.BLOCK_APPLIER))
+                .merge(reducer)
 
         final GenerationRegion mergedResult = stream
                 .filter((unmodifiable, block, x, y, z) -> block.getType() == BlockTypes.AIR)
-                .merge(this, merger, region, VolumeFiller.BLOCK_APPLIER);
+                .merge(this, UnmodifiableBoundedWorldView::asUnmodifiableBlockVolume, merger, region, VolumeFiller.BLOCK_APPLIER);
         return this;
     }
 }

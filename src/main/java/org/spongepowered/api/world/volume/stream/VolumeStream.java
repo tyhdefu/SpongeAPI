@@ -31,6 +31,7 @@ import org.spongepowered.api.world.volume.Volume;
 import org.spongepowered.api.world.volume.archetype.block.entity.StreamableBlockEntityArchetypeVolume;
 import org.spongepowered.api.world.volume.block.StreamableBlockVolume;
 import org.spongepowered.api.world.volume.entity.StreamableEntityVolume;
+import org.spongepowered.api.world.volume.function.UnmodifiableVolumeViewer;
 import org.spongepowered.api.world.volume.function.VolumeFiller;
 import org.spongepowered.api.world.volume.function.VolumeConsumer;
 import org.spongepowered.api.world.volume.function.VolumeMapper;
@@ -69,8 +70,8 @@ import java.util.stream.Stream;
  *     </li>
  *     <li>Mapping Operations
  *     <ul>
- *         <li>{@link #map(VolumeMapper)}</li>
- *         <li>{@link #map(Function)}</li>
+ *         <li>{@link #map(UnmodifiableVolumeViewer, VolumeMapper)}</li>
+ *         <li>{@link #map(Function, Function)}</li>
  *     </ul>
  *     </li>
  *     <li>Terminal Operations - These operations mark a
@@ -149,20 +150,20 @@ public interface VolumeStream<V extends Volume, I> extends BaseVolumeStream<Volu
      * @param <T> The new desired type
      * @return A new stream
      */
-    <T, U extends UnmodifiableVolume> VolumeStream<V, T> map(VolumeMapper<I, U, T> mapper);
+    <T, U extends UnmodifiableVolume> VolumeStream<V, T> map(UnmodifiableVolumeViewer<V, U> viewer, VolumeMapper<I, U, T> mapper);
 
     /**
      * Returns a new stream chain that will contain elements of {@code T new types}
      * based on the existing elements of {@code type I} that are otherwise mapped with
-     * {@link Function}, equivalent to {@link #map(VolumeMapper)}. Similar to
+     * {@link Function}, equivalent to {@link #map(UnmodifiableVolumeViewer, VolumeMapper)}. Similar to
      * {@link Stream#map(Function)}, this is an intermediate operation.
      *
      * @param mapper The mapping function
      * @param <T> The new desired type
      * @return A new stream
      */
-    default <T, U extends UnmodifiableVolume> VolumeStream<V, T> map(Function<VolumeResult<U, I>, T> mapper) {
-        return map((VolumeMapper<I, U, T>) (volume, value, x, y, z) -> mapper.apply(VolumeResult.of(volume, value, new Vector3i(x, y, z))));
+    default <T, U extends UnmodifiableVolume> VolumeStream<V, T> map(Function<? super V, U> viewer, Function<VolumeResult<U, I>, T> mapper) {
+        return map(viewer::apply, (volume, value, x, y, z) -> mapper.apply(VolumeResult.of(volume, value, new Vector3i(x, y, z))));
     }
 
     /**
@@ -282,9 +283,9 @@ public interface VolumeStream<V extends Volume, I> extends BaseVolumeStream<Volu
      */
     Stream<VolumeResult<V, I>> toStream();
 
-    <M extends MutableVolume, U extends UnmodifiableVolume> M fill(Supplier<M> volumeSupplier, VolumeMerger<I, ? super U> merger, VolumeFiller<M, I> applicator);
+    <M extends MutableVolume, U extends UnmodifiableVolume> M fill(Supplier<M> volumeSupplier, UnmodifiableVolumeViewer<V, U> viewer, VolumeMerger<I, ? super U> merger, VolumeFiller<M, I> applicator);
 
-    <M extends MutableVolume, U extends UnmodifiableVolume> M fill(M target, VolumeMerger<I, ? super U> merger, VolumeFiller<M, I> filler);
+    <M extends MutableVolume, U extends UnmodifiableVolume> M fill(M target, UnmodifiableVolumeViewer<V, U> viewer, VolumeMerger<I, ? super U> merger, VolumeFiller<M, I> filler);
 
     /**
      * A terminal operation that will apply all existing elements of this stream,
@@ -302,13 +303,11 @@ public interface VolumeStream<V extends Volume, I> extends BaseVolumeStream<Volu
      * an exception is thrown before starting to consume this stream. This is a
      * terminal operation.</p>
      *
-     * @param <M> The base type of mutable volume
-     * @param second The second volume to merge elements from
-     * @param merger The resolving merging function
-     * @param destination The destination volume
+
      */
-    default <M extends MutableVolume, M2 extends M, U extends UnmodifiableVolume> M2 merge(V second, VolumeMerger<I, ? super U> merger, M2 destination, VolumeFiller<? extends M, ? extends I> applier) {
-        return merge(VolumeReducer.of(() -> second, () -> (U) getVolume().asUnmodifiableVolume(), () -> destination, merger, applier));
+    default <M extends MutableVolume, M2 extends M, U extends UnmodifiableVolume> M2 merge(V second, UnmodifiableVolumeViewer<? super V, ? extends U> viewer, VolumeMerger<I, ? super U> merger, M2 destination, VolumeFiller<? extends M, ? extends I> applier) {
+        final VolumeReducer<V, I, M, M2, U> reducer = VolumeReducer.of(() -> second, () -> viewer.apply(second), () -> destination, merger, applier);
+        return merge(reducer);
     }
 
     <M extends MutableVolume, M2 extends M, U extends UnmodifiableVolume> M2 merge(VolumeReducer<V, I, M, M2, U> reducer);
