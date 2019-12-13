@@ -27,15 +27,15 @@ package org.spongepowered.api.command.manager;
 /**
  * Indicates that a command could not be registered.
  */
-public class FailedRegistrationException extends RuntimeException {
+public class CommandFailedRegistrationException extends RuntimeException {
 
     private static final long serialVersionUID = -783923658025L;
 
-    public FailedRegistrationException(String message) {
+    public CommandFailedRegistrationException(String message) {
         super(message);
     }
 
-    public FailedRegistrationException(String message, Throwable inner) {
+    public CommandFailedRegistrationException(String message, Throwable inner) {
         super(message, inner);
     }
 

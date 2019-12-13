@@ -113,7 +113,7 @@ public interface CommandManager {
     List<String> suggest(Subject subject, MessageChannel receiver, String arguments);
 
     /**
-     * Registers a {@link Command} with the Sponge {@link CommandRegistrar}.
+     * Registers a set of command aliases with this manager.
      * This method should only be used by plugins that implement their own
      * command framework, as described in the description of the
      * {@link CommandRegistrar} class.
@@ -123,7 +123,7 @@ public interface CommandManager {
      * namespacing in addition to the unnamespaced aliases. As an example,
      * if a plugin with ID {@code foo} tries to register the command
      * {@code bar}, the command manager will attempt to register the commands
-     * {@code /bar} and {@code /foo:bar}.</p>
+     * {@code /bar} and {@code /foo:bar} as valid aliases.</p>
      *
      * <p>Command aliases may not contain whitespace.</p>
      *
@@ -138,14 +138,14 @@ public interface CommandManager {
      * @param secondaryAliases Secondary aliases to register, if any
      * @return The {@link CommandMapping} containing the command mapping
      *         information.
-     * @throws FailedRegistrationException thrown if the command could not be
+     * @throws CommandFailedRegistrationException thrown if the command could not be
      *                                     registered.
      */
     CommandMapping registerAlias(CommandRegistrar registrar,
             PluginContainer container,
             String primaryAlias,
             String... secondaryAliases)
-            throws FailedRegistrationException;
+            throws CommandFailedRegistrationException;
 
     /**
      * Registers a {@link Command} with the Sponge {@link CommandRegistrar}.
@@ -169,11 +169,11 @@ public interface CommandManager {
      * @param secondaryAliases Secondary aliases to register, if any
      * @return The {@link CommandMapping} containing the command mapping
      *         information.
-     * @throws FailedRegistrationException thrown if the command could not be
+     * @throws CommandFailedRegistrationException thrown if the command could not be
      *                                     registered.
      */
     CommandMapping register(PluginContainer container, Command command, String primaryAlias, String... secondaryAliases)
-        throws FailedRegistrationException;
+        throws CommandFailedRegistrationException;
 
     /**
      * Unregisters a command based on the alias and provided
