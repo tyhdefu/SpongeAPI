@@ -22,15 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.command.registrar;
+package org.spongepowered.api.command.registrar.tree;
 
-import java.util.function.Consumer;
+import org.spongepowered.api.CatalogKey;
+import org.spongepowered.api.util.annotation.CatalogedBy;
 
 /**
- * Builds a tree of command parameters for sending to clients.
- *
- * // TODO: this in a sane way
+ * Represents the client-side behaviour of a command parameter.
  */
-public interface CommandTreeBuilder {
+@CatalogedBy(ClientCompletionKeys.class)
+public interface ClientCompletionKey<T extends CommandTreeBuilder<T>> extends CatalogKey {
+
+    /**
+     * Creates a {@link CommandTreeBuilder} that represents this
+     * {@link ClientCompletionKey}
+     *
+     * @return The new {@link CommandTreeBuilder}
+     */
+    T createCommandTreeBuilder();
 
 }

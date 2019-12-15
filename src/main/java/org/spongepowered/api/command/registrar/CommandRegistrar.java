@@ -30,6 +30,7 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.exception.CommandException;
 import org.spongepowered.api.command.manager.CommandManager;
 import org.spongepowered.api.command.manager.CommandMapping;
+import org.spongepowered.api.command.registrar.tree.CommandTreeBuilder;
 import org.spongepowered.api.event.game.GameRegistryEvent;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
@@ -144,6 +145,6 @@ public interface CommandRegistrar extends CatalogType {
      *
      * @param builder The builder to supply command information to
      */
-    void completeCommandTree(CommandTreeBuilder builder);
+    void completeCommandTree(CommandTreeBuilder.Empty builder);
 
 }
