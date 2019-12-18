@@ -145,6 +145,6 @@ public interface CommandRegistrar extends CatalogType {
      *
      * @param builder The builder to supply command information to
      */
-    void completeCommandTree(CommandTreeBuilder.Empty builder);
+    void completeCommandTree(CommandTreeBuilder.Basic builder);
 
 }

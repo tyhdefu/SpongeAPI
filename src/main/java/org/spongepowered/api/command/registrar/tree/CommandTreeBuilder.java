@@ -44,7 +44,7 @@ public interface CommandTreeBuilder<T extends CommandTreeBuilder<T>> {
      *                  {@link CommandTreeBuilder} for the newly created child.
      * @return This, for chaining.
      */
-    T child(String key, Consumer<Empty> childNode);
+    T child(String key, Consumer<Basic> childNode);
 
     /**
      * Creates a child of this node with the given key that accepts a
@@ -62,14 +62,13 @@ public interface CommandTreeBuilder<T extends CommandTreeBuilder<T>> {
     <S extends CommandTreeBuilder<S>> T child(String key, ClientCompletionKey<S> completionKey, Consumer<S> childNode);
 
     /**
-     * Declares that the given {@code key} should be considered as if the
-     * string specified in {@code to} has been executed.
+     * Declares that this element will redirect processing to the given node
+     * <strong>after</strong> this node has been processed.
      *
-     * @param key The key
-     * @param to The string to redirect to
+     * @param to The node to redirect to
      * @return This, for chaining
      */
-    T redirect(String key, String to);
+    T redirect(String to);
 
     /**
      * Declares that the node this {@link CommandTreeBuilder} represents is
@@ -119,7 +118,7 @@ public interface CommandTreeBuilder<T extends CommandTreeBuilder<T>> {
     /**
      * A {@link CommandTreeBuilder} with no known properties to set.
      */
-    interface Empty extends CommandTreeBuilder<Empty> { }
+    interface Basic extends CommandTreeBuilder<Basic> { }
 
     /**
      * A {@link CommandTreeBuilder} that allows for a min-max range to be set.
