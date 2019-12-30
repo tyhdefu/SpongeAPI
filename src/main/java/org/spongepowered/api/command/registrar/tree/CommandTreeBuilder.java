@@ -62,6 +62,23 @@ public interface CommandTreeBuilder<T extends CommandTreeBuilder<T>> {
     <S extends CommandTreeBuilder<S>> T child(String key, ClientCompletionKey<S> completionKey, Consumer<S> childNode);
 
     /**
+     * Creates a child of this node with the given key that accepts a
+     * non-literal argument.
+     *
+     * <p>The builder returned by this method is the same builder as that
+     * invoked on. The child builder is provided in the {@code childNode}
+     * node.</p>
+     *
+     * @param key The name of the child node
+     * @param completionKey The {@link ClientCompletionKey} that indicates to
+     *                      the client how a tab completion should be handled.
+     * @return This, for chaining.
+     */
+    default <S extends CommandTreeBuilder<S>> T child(String key, Supplier<ClientCompletionKey<S>> completionKey, Consumer<S> childNode) {
+        return child(key, completionKey, childNode);
+    }
+
+    /**
      * Declares that this element will redirect processing to the given node
      * <strong>after</strong> this node has been processed.
      *
