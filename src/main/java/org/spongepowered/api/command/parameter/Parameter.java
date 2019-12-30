@@ -25,7 +25,6 @@
 package org.spongepowered.api.command.parameter;
 
 import com.google.common.reflect.TypeToken;
-import com.sun.org.apache.xml.internal.resolver.CatalogEntry;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.Sponge;
@@ -37,7 +36,6 @@ import org.spongepowered.api.command.parameter.managed.ValueCompleter;
 import org.spongepowered.api.command.parameter.managed.ValueParameter;
 import org.spongepowered.api.command.parameter.managed.ValueParser;
 import org.spongepowered.api.command.parameter.managed.ValueUsage;
-import org.spongepowered.api.command.parameter.managed.standard.CatalogedValueParameter;
 import org.spongepowered.api.command.parameter.managed.standard.CatalogedValueParameters;
 import org.spongepowered.api.command.parameter.managed.standard.VariableValueParameters;
 import org.spongepowered.api.data.persistence.DataContainer;
@@ -88,7 +86,7 @@ import java.util.function.Supplier;
  *     <li>{@link Subcommand}s can be placed anywhere in a parameter
  *     chain where a {@link Parameter} can be added, if successfully parsed,
  *     any containing {@link Command} would take precedence and its
- *     {@link Command#process(org.spongepowered.api.command.CommandCause, String)} method will be called instead
+ *     {@link Command#process(CommandCause, String)} method will be called instead
  *     of any parent.</li>
  * </ul>
  *

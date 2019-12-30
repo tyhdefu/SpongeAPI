@@ -97,6 +97,14 @@ public interface CommandTreeBuilder<T extends CommandTreeBuilder<T>> {
     T executable();
 
     /**
+     * Declares that this node uses custom suggestions and, as such, tab
+     * completions should query the server.
+     *
+     * @return This, for chaining.
+     */
+    T customSuggestions();
+
+    /**
      * Sets an arbitrary property for this node with a string based value.
      *
      * @param key The property key.

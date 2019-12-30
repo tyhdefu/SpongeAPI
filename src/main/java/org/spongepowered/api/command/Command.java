@@ -34,7 +34,6 @@ import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.ResettableBuilder;
-import org.spongepowered.api.world.Location;
 
 import java.util.Arrays;
 import java.util.Collection;
