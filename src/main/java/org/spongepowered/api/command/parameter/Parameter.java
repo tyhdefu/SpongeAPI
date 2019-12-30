@@ -25,6 +25,7 @@
 package org.spongepowered.api.command.parameter;
 
 import com.google.common.reflect.TypeToken;
+import com.sun.org.apache.xml.internal.resolver.CatalogEntry;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.Sponge;
@@ -36,6 +37,7 @@ import org.spongepowered.api.command.parameter.managed.ValueCompleter;
 import org.spongepowered.api.command.parameter.managed.ValueParameter;
 import org.spongepowered.api.command.parameter.managed.ValueParser;
 import org.spongepowered.api.command.parameter.managed.ValueUsage;
+import org.spongepowered.api.command.parameter.managed.standard.CatalogedValueParameter;
 import org.spongepowered.api.command.parameter.managed.standard.CatalogedValueParameters;
 import org.spongepowered.api.command.parameter.managed.standard.VariableValueParameters;
 import org.spongepowered.api.data.persistence.DataContainer;
@@ -122,12 +124,24 @@ public interface Parameter {
      * Gets a builder that builds a {@link Parameter.Value}.
      *
      * @param <T> The type of parameter
-     * @param parameter The value parameter
      * @param valueClass The type of value class
+     * @param parameter The value parameter
      * @return The {@link Value.Builder}
      */
     static <T> Value.Builder<T> builder(Class<T> valueClass, ValueParameter<T> parameter) {
         return builder(valueClass).parser(parameter);
+    }
+
+    /**
+     * Gets a builder that builds a {@link Parameter.Value}.
+     *
+     * @param <T> The type of parameter
+     * @param valueClass The type of value class
+     * @param parameter The value parameter, wrapped in a {@link Supplier}
+     * @return The {@link Value.Builder}
+     */
+    static <T> Value.Builder<T> builder(Class<T> valueClass, Supplier<? extends ValueParameter<T>> parameter) {
+        return builder(valueClass).parser(parameter.get());
     }
 
     /**
@@ -891,6 +905,26 @@ public interface Parameter {
              * @return This builder, for chaining
              */
             Builder<T> parser(ValueParser<? extends T> parser);
+
+            /**
+             * The {@link ValueParser} that will extract the value(s) from the
+             * parameters. If this is a {@link ValueParameter}, the object's
+             * complete and usage methods will be used for completion and usage
+             * unless this builder's {@link #setSuggestions(ValueCompleter)}}
+             * and {@link #setUsage(ValueUsage)} methods are specified.
+             *
+             * <p>This method is intended for use with parameters returned from
+             * the {@link CatalogedValueParameters} class. These
+             * {@link Supplier}s will be resolved at call time, not during
+             * command execution.</p>
+             *
+             * @param parser The {@link Supplier} containing the
+             *               {@link ValueParser} to use
+             * @return This builder, for chaining
+             */
+            default Builder<T> parser(Supplier<? extends ValueParser<? extends T>> parser) {
+                return parser(parser.get());
+            }
 
             /**
              * Provides a function that provides tab completions

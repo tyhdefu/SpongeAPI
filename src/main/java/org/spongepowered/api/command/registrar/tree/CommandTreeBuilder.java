@@ -212,7 +212,7 @@ public interface CommandTreeBuilder<T extends CommandTreeBuilder<T>> {
         /**
          * Indicates that only one object can be selected by this parameter.
          * If this is not called, this element will default to allowing the
-         * selection of multiple object.
+         * selection of multiple objects.
          *
          * @return This, for chaining.
          */

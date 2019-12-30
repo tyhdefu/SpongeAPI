@@ -31,7 +31,8 @@ import org.spongepowered.api.command.exception.CommandException;
 import org.spongepowered.api.command.manager.CommandManager;
 import org.spongepowered.api.command.manager.CommandMapping;
 import org.spongepowered.api.command.registrar.tree.CommandTreeBuilder;
-import org.spongepowered.api.event.game.GameRegistryEvent;
+import org.spongepowered.api.event.cause.EventContextKeys;
+import org.spongepowered.api.event.registry.RegistryEvent;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 
@@ -54,19 +55,24 @@ import java.util.Optional;
  * regardless of the aliases that were registered and/or invoked by the
  * invoker of the command.</p>
  *
+ * <p>For command that wishes to investigate the command string that was
+ * executed, they may investigate the context in
+ * {@link CommandCause#getCause()}, looking for the
+ * {@link EventContextKeys#COMMAND_STRING} context key.</p>
+ *
  * <p>Command frameworks are free to choose how they parse commands. However,
  * a framework's {@link CommandRegistrar} <strong>must</strong> do the following
  * in order to be successfully registered and receive their commands:</p>
  *
  * <ul>
  *     <li>The registrar <strong>must</strong> be registered during the
- *     {@link GameRegistryEvent} for {@link CommandRegistrar}s; and</li>
+ *     {@link RegistryEvent} for {@link CommandRegistrar}s; and</li>
  *     <li>Commands registered through the registrar must be synced back
  *     to the {@link CommandManager}, otherwise such commands will not
  *     be passed back to this registrar.</li>
  * </ul>
  *
- * <p>While this interface does not a {@code register} method, it
+ * <p>While this interface does not contain a {@code register} method, it
  * <strong>does</strong> have an {@link #unregister(CommandMapping)} method.
  * This is only intended for the {@link CommandManager} to use as a
  * callback when the manager receives a de-registration request.</p>
@@ -110,7 +116,6 @@ public interface CommandRegistrar extends CatalogType {
      *                  contain {@code test test2}.)
      * @return The suggestions
      */
-    // TODO: Make a list of suggestions in parity with Brig
     List<String> suggestions(CommandCause cause, String command, String arguments) throws CommandException;
 
     /**
@@ -143,8 +148,11 @@ public interface CommandRegistrar extends CatalogType {
      * Called when an update to the client's command list is requested,
      * for client side completion.
      *
+     * @param commandCause The {@link CommandCause} to build the tree for
      * @param builder The builder to supply command information to
      */
-    void completeCommandTree(CommandTreeBuilder.Basic builder);
+    // TODO: Should this just be a player, as that's the only entity the tree
+    // will be sent for?
+    void completeCommandTree(CommandCause commandCause, CommandTreeBuilder.Basic builder);
 
 }
