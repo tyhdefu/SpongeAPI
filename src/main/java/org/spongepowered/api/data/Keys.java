@@ -106,6 +106,7 @@ import org.spongepowered.api.entity.living.Ageable;
 import org.spongepowered.api.entity.living.Agent;
 import org.spongepowered.api.entity.living.ArmorStand;
 import org.spongepowered.api.entity.living.Bat;
+import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.entity.living.Humanoid;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.animal.Animal;
@@ -171,6 +172,7 @@ import org.spongepowered.api.entity.vehicle.minecart.MinecartEntity;
 import org.spongepowered.api.entity.weather.LightningBolt;
 import org.spongepowered.api.entity.weather.WeatherEffect;
 import org.spongepowered.api.event.cause.entity.damage.source.DamageSources;
+import org.spongepowered.api.event.data.ChangeDataHolderEvent;
 import org.spongepowered.api.fluid.FluidStackSnapshot;
 import org.spongepowered.api.item.FireworkEffect;
 import org.spongepowered.api.item.ItemType;
@@ -179,6 +181,7 @@ import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.equipment.EquipmentType;
+import org.spongepowered.api.item.merchant.Merchant;
 import org.spongepowered.api.item.merchant.TradeOffer;
 import org.spongepowered.api.item.potion.PotionType;
 import org.spongepowered.api.profile.GameProfile;
@@ -189,6 +192,7 @@ import org.spongepowered.api.util.Axis;
 import org.spongepowered.api.util.Color;
 import org.spongepowered.api.util.Direction;
 import org.spongepowered.api.util.RespawnLocation;
+import org.spongepowered.api.util.annotation.eventgen.GenerateEvent;
 import org.spongepowered.api.util.rotation.Rotation;
 import org.spongepowered.api.util.weighted.WeightedSerializableObject;
 import org.spongepowered.api.world.explosion.Explosion;
@@ -810,6 +814,7 @@ public final class Keys {
      * Represents the {@link Key} for the color of a dyeable block, item or
      * entity.
      */
+    @GenerateEvent(value = ChangeDataHolderEvent.ValueChange.class, target = { Sheep.class, Wolf.class })
     public static final Supplier<Key<Value<DyeColor>>> DYE_COLOR = Sponge.getRegistry().getCatalogRegistry().provideSupplier(Key.class, "DYE_COLOR");
 
     /**
@@ -856,6 +861,7 @@ public final class Keys {
      * maximum. This type of effect occurs over time and can be modified by
      * movements and actions performed by the {@link Humanoid}.</p>
      */
+    @GenerateEvent(value = ChangeDataHolderEvent.ValueChange.class, target = Player.class)
     public static final Supplier<Key<BoundedValue<Double>>> EXHAUSTION = Sponge.getRegistry().getCatalogRegistry().provideSupplier(Key.class, "EXHAUSTION");
 
     /**
@@ -996,6 +1002,7 @@ public final class Keys {
      * hunger levels. If the food level is high enough, the humanoid may heal. If the food level is at 0,
      * the humanoid may starve.</p>
      */
+    @GenerateEvent(value = ChangeDataHolderEvent.ValueChange.class, target = Player.class)
     public static final Supplier<Key<BoundedValue<Integer>>> FOOD_LEVEL = Sponge.getRegistry().getCatalogRegistry().provideSupplier(Key.class, "FOOD_LEVEL");
 
     /**
@@ -1074,6 +1081,7 @@ public final class Keys {
      * <p>Convention dictates that health does not follow below 0 but this
      * convention may be broken.</p>
      */
+    @GenerateEvent(value = ChangeDataHolderEvent.ValueChange.class, target = Living.class)
     public static final Supplier<Key<BoundedValue<Double>>> HEALTH = Sponge.getRegistry().getCatalogRegistry().provideSupplier(Key.class, "HEALTH");
 
     /**
@@ -1796,6 +1804,7 @@ public final class Keys {
     /**
      * Represents the {@link Key} for the {@link Villager} or {@link ZombieVillager}'s {@link Profession}.
      */
+    @GenerateEvent(value = ChangeDataHolderEvent.ValueChange.class, target = Merchant.class)
     public static final Supplier<Key<Value<Profession>>> PROFESSION = Sponge.getRegistry().getCatalogRegistry().provideSupplier(Key.class, "PROFESSION");
 
     /**
@@ -1817,6 +1826,7 @@ public final class Keys {
     /**
      * Represents the {@link Key} for how much air a {@link Living} has left.
      */
+    @GenerateEvent(value = ChangeDataHolderEvent.ValueChange.class, target = Entity.class)
     public static final Supplier<Key<BoundedValue<Integer>>> REMAINING_AIR = Sponge.getRegistry().getCatalogRegistry().provideSupplier(Key.class, "REMAINING_AIR");
 
     /**
@@ -1872,6 +1882,7 @@ public final class Keys {
      * over time and can be modified by movements and actions performed by the
      * {@link Humanoid}.</p>
      */
+    @GenerateEvent(value = ChangeDataHolderEvent.ValueChange.class)
     public static final Supplier<Key<BoundedValue<Double>>> SATURATION = Sponge.getRegistry().getCatalogRegistry().provideSupplier(Key.class, "SATURATION");
 
     /**

@@ -26,12 +26,22 @@ package org.spongepowered.api.event.data;
 
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataTransactionResult;
+import org.spongepowered.api.data.Transaction;
+import org.spongepowered.api.data.type.DyeColor;
+import org.spongepowered.api.data.type.Profession;
 import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.living.Living;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.Event;
 import org.spongepowered.api.event.impl.data.AbstractValueChangeEvent;
+import org.spongepowered.api.item.merchant.Merchant;
 import org.spongepowered.api.util.annotation.eventgen.ImplementedBy;
 import org.spongepowered.api.util.annotation.eventgen.PropertySettings;
+
+import java.util.Optional;
+import java.util.OptionalDouble;
 
 /**
  * An event that is associated with a {@link org.spongepowered.api.data.DataHolder.Mutable} that may have some
@@ -82,5 +92,88 @@ public interface ChangeDataHolderEvent extends Event, Cancellable {
          */
         @PropertySettings(requiredParameter = false)
         DataTransactionResult getEndResult();
+
+        // Generated
+
+        /**
+         * An event to listen for {@link org.spongepowered.api.data.Keys#DYE_COLOR}
+         * changes on various targets
+         */
+        interface ChangeDyeColor extends ValueChange {
+
+            Entity getTarget();
+
+            DyeColor getOriginalDyeColor();
+
+            DyeColor getDefaultDyeColor();
+
+            Optional<DyeColor> getCustomDyeColor();
+
+            DyeColor getFinalDyeColor();
+
+            void setCustomDyeColor(DyeColor dyeColor);
+        }
+
+        /**
+         * An event to listen for {@link org.spongepowered.api.data.Keys#EXHAUSTION}
+         * changes.
+         */
+        interface ChangeExhaustion extends ValueChange {
+
+            Player getPlayer();
+
+            double getOriginalExhaustion();
+
+            double getDefaultNewExhaustion();
+
+            double getCustomNewExhaustion();
+
+            void setCustomNewExhaustion(double exhaustion);
+
+            double getFinalExhaustion();
+        }
+
+        interface ChangeFoodLevel extends ValueChange {
+
+            Player getPlayer();
+
+            int getOriginalFoodLevel();
+
+            int getDefaultNewFoodLevel();
+
+            int getCustomNewFoodLevel();
+
+            void setCustomNewFoodLevel(int foodLevel);
+
+            int getFinalFoodLevel();
+
+        }
+
+        interface ChangeHealth extends ValueChange {
+
+            Living getLiving();
+
+            double getOriginalHealth();
+
+            double getDefaultNewHealth();
+
+            OptionalDouble getCustomNewHealth();
+
+            void setCustomNewHealth(double newHealth);
+
+            double getFinalNewHealth();
+
+        }
+
+        interface ChangeProfession extends ValueChange {
+
+            Merchant getMerchant();
+
+            Transaction<Profession> getOriginalAir();
+
+
+        }
+
+
     }
 }
