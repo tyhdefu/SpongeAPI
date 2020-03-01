@@ -24,10 +24,12 @@
  */
 package org.spongepowered.api.command;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.SystemSubject;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.event.CauseStackManager;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKeys;
@@ -62,6 +64,9 @@ import java.util.Optional;
  * plate, the direct cause will be the command block. However, the player
  * in question will also be present in the cause stack, allowing command
  * providers to obtain richer information about the invocation of their command.
+ * This is inline with how {@link Cause}s work in Sponge and its events, for
+ * more information about how Causes work, see the {@link Cause} and
+ * {@link CauseStackManager} javadocs and associated documentation.
  * </p>
  *
  * <p>The {@link EventContext} that is attached to {@link Cause#getContext()}
@@ -83,6 +88,14 @@ import java.util.Optional;
  *     the command should take into account when executing.</li>
  * </ul>
  *
+ * <p>Note that {@link #setMessageChannel(MessageChannel)} may override the
+ * {@link EventContextKeys#MESSAGE_CHANNEL} if supplied, however, the
+ * implementation may not update the cause.</p>
+ *
+ * <p>This object acts as a {@link Subject}, and simply redirects all calls
+ * inherited by this interface to the subject returned by {@link #getSubject()}.
+ * </p>
+ *
  * <p>There are utility methods on this interface that provide hints as to what
  * the implementation will select for different tasks, for example, the
  * implementation will use the result of {@link #getSubject()} for permission
@@ -94,7 +107,7 @@ import java.util.Optional;
  * be taken a guarantee of what may be present, however, they indicate what
  * typically would be of interest to command API consumers.</p>
  */
-public interface CommandCause {
+public interface CommandCause extends Subject, MessageReceiver {
 
     /**
      * Creates a {@link CommandCause} from the provided {@link Cause}
@@ -234,6 +247,14 @@ public interface CommandCause {
         return Optional.ofNullable(getCause().getContext().get(EventContextKeys.BLOCK_TARGET)
                 .orElseGet(() -> getCause().first(BlockSnapshot.class).orElse(null)));
     }
+
+    /**
+     * Overrides the {@link MessageChannel} set by the supplied {@link Cause}
+     *
+     * @param channel The message channel to send messages to
+     */
+    @Override
+    void setMessageChannel(@Nullable MessageChannel channel);
 
     /**
      * Creates instances of the {@link CommandCause}.
