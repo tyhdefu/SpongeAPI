@@ -22,37 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.data.property.block;
+package org.spongepowered.api.service.economy.account;
 
-import org.spongepowered.api.data.property.BooleanProperty;
+import org.spongepowered.api.CatalogType;
+import org.spongepowered.api.util.annotation.CatalogedBy;
 
 /**
- * Gets if a block type can be replaced by other block types when other
- * blocks are being placed. In short, the case where the value is
- * <code>true</code>, it can be replaced.
+ * Indicates whether the deletion of an {@link Account} succeeded.
  */
-public class ReplaceableProperty extends BooleanProperty {
+@CatalogedBy(AccountDeletionResultTypes.class)
+public interface AccountDeletionResultType extends CatalogType {
 
     /**
-     * Creates a new {@link ReplaceableProperty} with the provided
-     * {@code value}.
+     * Returns whether this result type represents a successful deletion.
      *
-     * @param value The value of whether a block can be replaced
+     * @return Whether the result represents a successful deletion.
      */
-    public ReplaceableProperty(boolean value) {
-        super(value);
-    }
-
-    /**
-     * Creates a new {@link ReplaceableProperty} with the provided
-     * {@code value} and
-     * {@link org.spongepowered.api.data.Property.Operator operator}
-     * for comparisons.
-     *
-     * @param value The value
-     * @param operator The operator
-     */
-    public ReplaceableProperty(boolean value, Operator operator) {
-        super(value, operator);
-    }
+    boolean isSuccess();
 }

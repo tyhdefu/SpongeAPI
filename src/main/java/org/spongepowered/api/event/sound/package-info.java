@@ -22,37 +22,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.data.property.block;
-
-import org.spongepowered.api.data.property.BooleanProperty;
-
-/**
- * Gets if a block type can be replaced by other block types when other
- * blocks are being placed. In short, the case where the value is
- * <code>true</code>, it can be replaced.
- */
-public class ReplaceableProperty extends BooleanProperty {
-
-    /**
-     * Creates a new {@link ReplaceableProperty} with the provided
-     * {@code value}.
-     *
-     * @param value The value of whether a block can be replaced
-     */
-    public ReplaceableProperty(boolean value) {
-        super(value);
-    }
-
-    /**
-     * Creates a new {@link ReplaceableProperty} with the provided
-     * {@code value} and
-     * {@link org.spongepowered.api.data.Property.Operator operator}
-     * for comparisons.
-     *
-     * @param value The value
-     * @param operator The operator
-     */
-    public ReplaceableProperty(boolean value, Operator operator) {
-        super(value, operator);
-    }
-}
+@org.spongepowered.api.util.annotation.NonnullByDefault
+package org.spongepowered.api.event.sound;
