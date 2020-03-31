@@ -24,7 +24,6 @@
  */
 package org.spongepowered.api.command;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.SystemSubject;
 import org.spongepowered.api.block.BlockSnapshot;
@@ -34,14 +33,22 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.service.context.Context;
 import org.spongepowered.api.service.permission.Subject;
+import org.spongepowered.api.service.permission.SubjectCollection;
+import org.spongepowered.api.service.permission.SubjectData;
+import org.spongepowered.api.service.permission.SubjectReference;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.channel.MessageReceiver;
+import org.spongepowered.api.util.Tristate;
 import org.spongepowered.api.world.Locatable;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.math.vector.Vector3d;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * The {@link CommandCause} represents the {@link Cause} of a command, and
@@ -107,7 +114,7 @@ import java.util.Optional;
  * be taken a guarantee of what may be present, however, they indicate what
  * typically would be of interest to command API consumers.</p>
  */
-public interface CommandCause extends Subject, MessageReceiver {
+public interface CommandCause extends Subject {
 
     /**
      * Creates a {@link CommandCause} from the provided {@link Cause}
@@ -248,13 +255,70 @@ public interface CommandCause extends Subject, MessageReceiver {
                 .orElseGet(() -> getCause().first(BlockSnapshot.class).orElse(null)));
     }
 
-    /**
-     * Overrides the {@link MessageChannel} set by the supplied {@link Cause}
-     *
-     * @param channel The message channel to send messages to
-     */
     @Override
-    void setMessageChannel(@Nullable MessageChannel channel);
+    default SubjectCollection getContainingCollection() {
+        return getSubject().getContainingCollection();
+    }
+
+    @Override
+    default SubjectReference asSubjectReference() {
+        return getSubject().asSubjectReference();
+    }
+
+    @Override
+    default boolean isSubjectDataPersisted() {
+        return getSubject().isSubjectDataPersisted();
+    }
+
+    @Override
+    default SubjectData getSubjectData() {
+        return getSubject().getSubjectData();
+    }
+
+    @Override
+    default SubjectData getTransientSubjectData() {
+        return getSubject().getTransientSubjectData();
+    }
+
+    @Override
+    default Tristate getPermissionValue(Set<Context> contexts, String permission) {
+        return getSubject().getPermissionValue(contexts, permission);
+    }
+
+    @Override
+    default boolean isChildOf(Set<Context> contexts, SubjectReference parent) {
+        return getSubject().isChildOf(contexts, parent);
+    }
+
+    @Override
+    default List<SubjectReference> getParents(Set<Context> contexts) {
+        return getSubject().getParents();
+    }
+
+    @Override
+    default Optional<String> getOption(Set<Context> contexts, String key) {
+        return getSubject().getOption(contexts, key);
+    }
+
+    @Override
+    default String getIdentifier() {
+        return getSubject().getIdentifier();
+    }
+
+    @Override
+    default Set<Context> getActiveContexts() {
+        return getSubject().getActiveContexts();
+    }
+
+    /**
+     * Sends a message to the {@link MessageChannel} as given by
+     * {@link #getMessageChannel()}.
+     *
+     * @param message The message to send.
+     */
+    default void sendMessage(Text message) {
+        getMessageChannel().send(message);
+    }
 
     /**
      * Creates instances of the {@link CommandCause}.
