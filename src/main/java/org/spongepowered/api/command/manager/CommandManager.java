@@ -28,6 +28,7 @@ import org.spongepowered.api.command.Command;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.exception.CommandException;
 import org.spongepowered.api.command.registrar.CommandRegistrar;
+import org.spongepowered.api.command.registrar.tree.CommandTreeBuilder;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.channel.MessageChannel;
@@ -134,6 +135,8 @@ public interface CommandManager {
      * @param registrar The {@link CommandRegistrar} that is requesting the
      *                  aliases
      * @param container The {@link PluginContainer} to register the command for
+     * @param commandTree The {@link CommandTreeBuilder} that represents this command
+     *                    structure
      * @param primaryAlias The first command alias to register
      * @param secondaryAliases Secondary aliases to register, if any
      * @return The {@link CommandMapping} containing the command mapping
@@ -143,6 +146,7 @@ public interface CommandManager {
      */
     CommandMapping registerAlias(CommandRegistrar registrar,
             PluginContainer container,
+            CommandTreeBuilder.Basic commandTree,
             String primaryAlias,
             String... secondaryAliases)
             throws CommandFailedRegistrationException;
