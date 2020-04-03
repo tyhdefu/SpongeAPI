@@ -25,6 +25,7 @@
 package org.spongepowered.api.command.manager;
 
 import org.spongepowered.api.command.Command;
+import org.spongepowered.api.command.CommandCause;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.exception.CommandException;
 import org.spongepowered.api.command.registrar.CommandRegistrar;
@@ -37,6 +38,7 @@ import org.spongepowered.api.text.channel.MessageReceiver;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Registers and dispatches commands
@@ -137,6 +139,8 @@ public interface CommandManager {
      * @param container The {@link PluginContainer} to register the command for
      * @param commandTree The {@link CommandTreeBuilder} that represents this command
      *                    structure
+     * @param requirement What a {@link CommandCause} needs to fulfil in order for this
+     *                    command to be executed.
      * @param primaryAlias The first command alias to register
      * @param secondaryAliases Secondary aliases to register, if any
      * @return The {@link CommandMapping} containing the command mapping
@@ -147,6 +151,7 @@ public interface CommandManager {
     CommandMapping registerAlias(CommandRegistrar registrar,
             PluginContainer container,
             CommandTreeBuilder.Basic commandTree,
+            Predicate<CommandCause> requirement,
             String primaryAlias,
             String... secondaryAliases)
             throws CommandFailedRegistrationException;
