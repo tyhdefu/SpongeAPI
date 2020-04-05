@@ -138,7 +138,7 @@ public interface CommandManager {
      *                  aliases
      * @param container The {@link PluginContainer} to register the command for
      * @param commandTree The {@link CommandTreeBuilder} that represents this command
-     *                    structure
+     *                    structure.
      * @param requirement What a {@link CommandCause} needs to fulfil in order for this
      *                    command to be executed.
      * @param primaryAlias The first command alias to register

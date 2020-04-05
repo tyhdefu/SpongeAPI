@@ -38,6 +38,7 @@ import org.spongepowered.api.text.Text;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * {@link CommandRegistrar}s are the entry point for plugins wishing to provide
@@ -47,7 +48,7 @@ import java.util.Optional;
  * <p>This interface <em>does not</em> have a defined way to register commands,
  * it is up to the implementor to provide such a method. Such a registration
  * method <strong>must</strong> call
- * {@link CommandManager#registerAlias(CommandRegistrar, PluginContainer, String, String...)}
+ * {@link CommandManager#registerAlias(CommandRegistrar, PluginContainer, CommandTreeBuilder.Basic, Predicate, String, String...)}
  * to indicate that they wish to take control of certain aliases. Beyond this
  * call, the {@link CommandRegistrar} will only need to retain the link between
  * the primary alias and the command to execute, as the {@link CommandManager}
@@ -143,16 +144,5 @@ public interface CommandRegistrar extends CatalogType {
      * @param mapping The mapping to unregister
      */
     void unregister(CommandMapping mapping);
-
-    /**
-     * Called when an update to the client's command list is requested,
-     * for client side completion.
-     *
-     * @param commandCause The {@link CommandCause} to build the tree for
-     * @param builder The builder to supply command information to
-     */
-    // TODO: Should this just be a player, as that's the only entity the tree
-    // will be sent for?
-    void completeCommandTree(CommandCause commandCause, CommandTreeBuilder.Basic builder);
 
 }
