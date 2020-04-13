@@ -36,11 +36,11 @@ import java.time.Duration;
 public interface WeatherEffect extends Entity {
 
     /**
-     * {@link Keys#IS_HARMFUL}
+     * {@link Keys#CAN_HURT_ENTITIES}
      * @return Whether this effect is harmful
      */
     default Value.Mutable<Boolean> harmful() {
-        return this.requireValue(Keys.IS_HARMFUL).asMutable();
+        return this.requireValue(Keys.CAN_HURT_ENTITIES).asMutable();
     }
 
     /**
