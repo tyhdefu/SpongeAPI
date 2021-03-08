@@ -24,7 +24,7 @@
  */
 package org.spongepowered.api.map.decoration;
 
-import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.persistence.DataSerializable;
@@ -191,7 +191,7 @@ public interface MapDecoration extends DataSerializable {
          */
         Builder position(Vector2i position) throws IllegalArgumentException;
 
-        Builder customName(TextComponent customName);
+        Builder customName(Component customName);
 
         Builder from(MapDecoration mapDecoration);
 
