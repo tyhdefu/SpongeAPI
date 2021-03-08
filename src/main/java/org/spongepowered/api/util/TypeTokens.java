@@ -153,13 +153,11 @@ public final class TypeTokens {
 
     public static final TypeToken<Value<ArtType>> ART_TYPE_VALUE_TOKEN = new TypeToken<Value<ArtType>>() {};
 
-    public static final TypeToken<Value<MapCanvas>> MAP_CANVAS_VALUE_TOKEN = new TypeToken<Value<MapCanvas>>() {private static final long serialVersionUID = -1;};
+    public static final TypeToken<Value<MapCanvas>> MAP_CANVAS_VALUE_TOKEN = new TypeToken<Value<MapCanvas>>() {};
 
-    public static final TypeToken<SetValue<MapDecoration>> MAP_DECORATIONS_VALUE_TOKEN = new TypeToken<SetValue<MapDecoration>>() {private static final long serialVersionUID = -1;};
+    public static final TypeToken<SetValue<MapDecoration>> MAP_DECORATIONS_VALUE_TOKEN = new TypeToken<SetValue<MapDecoration>>() {};
 
-    public static final TypeToken<Value<MapInfo>> MAP_INFO_VALUE_TOKEN = new TypeToken<Value<MapInfo>>() {private static final long serialVersionUID = -1;};
-
-    public static final TypeToken<Value<ResourceKey>> WORLD_VALUE_TOKEN = new TypeToken<Value<ResourceKey>>() {private static final long serialVersionUID = -1;};
+    public static final TypeToken<Value<MapInfo>> MAP_INFO_VALUE_TOKEN = new TypeToken<Value<MapInfo>>() {};
 
     public static final TypeToken<Value<AttachmentSurface>> ATTACHMENT_SURFACE_VALUE_TOKEN = new TypeToken<Value<AttachmentSurface>>() {};
 
